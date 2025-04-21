@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<body>
+
+	<ui:composition template="/Template/Template.xhtml">
+		<ui:define name="top">
+
+		</ui:define>
+
+
+		<ui:define name="content">
+			<h2>MIS PEDIDOS</h2>
+			<!--Formulario para las cotizaciones-->
+			<h:form id="frmPedidos">
+				<p:growl id="msg" autoUpdate="true" showDetail="true" life="6000"
+					showSummary="true" />
+
+				<p:panel header="" style="margin: 0 auto;">
+
+					<h:panelGrid id="gridBuscarDatosCliente" columns="5">
+						<p:outputLabel value="CLIENTE" style="font-weight: bold" />
+
+					</h:panelGrid>
+					<p:divider style="height: 2px" />
+					<h:panelGrid id="DatosCliente" columns="2">
+						<p:dataTable id="tblEncabezado" var="item"
+							styleClass="color: #1E90FF !important"
+							emptyMessage="Ningún cliente agregado"
+							value="#{partidaBean.listaClieRfc}"
+							style="font-size: 1rem; font-weight: bold">
+							<p:column headerText="RFC">
+								<h:outputText value="#{item.rfc}" />
+							</p:column>
+							<p:column headerText="NOMBRE">
+								<h:outputText value="#{item.nombre}" />
+							</p:column>
+							<p:column headerText="CORREO">
+								<h:outputText value="#{item.emailpred}" />
+							</p:column>
+							<p:column headerText="CALLE">
+								<h:outputText value="#{item.calle}" />
+							</p:column>
+							<p:column headerText="NÚMERO">
+								<h:outputText value="#{item.numext}" />
+							</p:column>
+							<p:column headerText="CÓDIGO POSTAL">
+								<h:outputText value="#{item.codigo}" />
+							</p:column>
+							<p:column headerText="ESTADO">
+								<h:outputText value="#{item.estado}" />
+							</p:column>
+						</p:dataTable>
+					</h:panelGrid>
+					<br></br>
+					<br></br>
+					<p:divider style="height: 2px" />
+					<div style="text-align: center">
+						<p:outputLabel value="MI LISTA DE PEDIDOS"
+							style="font-weight: bold; color: #1E90FF" />
+					</div>
+					<p:divider style="height: 2px" />
+					<p:dataTable id="tblCotizaciones" var="item" editable="true"
+						rowIndexVar="index" size="small"
+						value="#{factSaeBean.listarFacturasCotizaciones}"
+						style="font-size: .9rem; font-weight: bold" sortMode="multiple"
+						scrollHeight="650" scrollWidth="99%"
+						currentPageReportTemplate="Total pedidos:#{factSaeBean.listarFacturasCotizaciones.size()}"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="50,100,200,500" rows="50" paginator="true"
+						liveScroll="true" rowHover="true" paginatorAlwaysVisible="true"
+						scrollable="true" emptyMessage="Ningún artículo agregado...">
+
+						<p:column headerText="DETALLE PEDIDO" style="width: 10%">
+							<p:commandButton value="Ver detalle" icon="fa-solid fa-circle-info"
+								update="frmPedidos:tblDetalle" onclick="PF('dlgDetalle').show()">
+								<f:setPropertyActionListener value="#{item}"
+									target="#{factSaeBean.fc}" />
+							</p:commandButton>
+						</p:column>
+
+						<p:column headerText="PEDIDO NO." style="width: 10%">
+							<h:outputText value="#{item.cveDoc}" />
+						</p:column>
+
+						<p:column headerText="ESTATUS" style="width: 10%">
+							<h:outputText value="PENDIENTE" />
+						</p:column>
+
+						<p:column headerText="FECHA PEDIDO" style="width: 10%">
+							<h:outputText value="#{item.fechaDoc}" />
+						</p:column>
+
+						<p:column headerText="$ TOTAL" style="width: 10%">
+                                $ <h:outputText value="#{item.canTot}" />
+						</p:column>
+
+					</p:dataTable>
+
+					<p:dialog header="DETALLE DEL PEDIDO" widgetVar="dlgDetalle"
+						showEffect="fade" closeOnEscape="true" minimizable="true"
+						maximizable="true">
+						<p:dataTable id="tblDetalle" var="item" editable="true"
+							rowIndexVar="index" size="small"
+							value="#{factSaeBean.listaPartidasCotizaciones}"
+							style="font-size: .9rem; font-weight: bold" sortMode="multiple"
+							scrollHeight="650" scrollWidth="50%"
+							currentPageReportTemplate="Total partidas:#{factSaeBean.listaPartidasCotizaciones.size()}"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="50,100,200,500" rows="50" paginator="true"
+							liveScroll="true" rowHover="true" paginatorAlwaysVisible="true"
+							scrollable="true" emptyMessage="Ningún artículo agregado...">
+
+							<p:column headerText="PEDIDO NO." style="width: 10%">
+								<h:outputText value="#{item.cveDoc}" />
+							</p:column>
+
+							<p:column headerText="CLAVE ARTÍCULO" style="width: 10%">
+								<h:outputText value="#{item.cveArt}" />
+							</p:column>
+
+							<p:column headerText="U/M" style="width: 10%">
+								<h:outputText value="#{item.cveUnidad}" />
+							</p:column>
+							<p:column headerText="CANTIDAD" style="width: 10%">
+								<h:outputText value="#{item.cant}" />
+							</p:column>
+
+						</p:dataTable>
+
+					</p:dialog>
+
+					<div style="text-align: center"></div>
+				</p:panel>
+
+			</h:form>
+			<!--Formulario para las cotizaciones-->
+
+		</ui:define>
+
+		<ui:define name="bottom">
+
+		</ui:define>
+
+	</ui:composition>
+
+</body>
+</html>

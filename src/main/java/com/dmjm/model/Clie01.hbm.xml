@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26/04/2018 12:42:38 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class name="com.dmjm.model.Clie01" optimistic-lock="version" table="CLIE01">
+    <id name="clave" type="string">
+      <column length="10" name="CLAVE"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="status" type="string">
+      <column length="1" name="STATUS" not-null="true"/>
+    </property>
+    <property name="nombre" type="string">
+      <column length="120" name="NOMBRE"/>
+    </property>
+    <property name="rfc" type="string">
+      <column length="15" name="RFC"/>
+    </property>
+    <property name="calle" type="string">
+      <column length="80" name="CALLE"/>
+    </property>
+    <property name="numint" type="string">
+      <column length="15" name="NUMINT"/>
+    </property>
+    <property name="numext" type="string">
+      <column length="15" name="NUMEXT"/>
+    </property>
+    <property name="cruzamientos" type="string">
+      <column length="40" name="CRUZAMIENTOS"/>
+    </property>
+    <property name="cruzamientos2" type="string">
+      <column length="40" name="CRUZAMIENTOS2"/>
+    </property>
+    <property name="colonia" type="string">
+      <column length="50" name="COLONIA"/>
+    </property>
+    <property name="codigo" type="string">
+      <column length="5" name="CODIGO"/>
+    </property>
+    <property name="localidad" type="string">
+      <column length="50" name="LOCALIDAD"/>
+    </property>
+    <property name="municipio" type="string">
+      <column length="50" name="MUNICIPIO"/>
+    </property>
+    <property name="estado" type="string">
+      <column length="50" name="ESTADO"/>
+    </property>
+    <property name="pais" type="string">
+      <column length="50" name="PAIS"/>
+    </property>
+    <property name="nacionalidad" type="string">
+      <column length="40" name="NACIONALIDAD"/>
+    </property>
+    <property name="referdir" type="string">
+      <column name="REFERDIR"/>
+    </property>
+    <property name="telefono" type="string">
+      <column length="25" name="TELEFONO"/>
+    </property>
+    <property name="clasific" type="string">
+      <column length="5" name="CLASIFIC"/>
+    </property>
+    <property name="fax" type="string">
+      <column length="25" name="FAX"/>
+    </property>
+    <property name="pagWeb" type="string">
+      <column length="60" name="PAG_WEB"/>
+    </property>
+    <property name="curp" type="string">
+      <column length="18" name="CURP"/>
+    </property>
+    <property name="cveZona" type="string">
+      <column length="6" name="CVE_ZONA"/>
+    </property>
+    <property name="imprir" type="string">
+      <column length="1" name="IMPRIR"/>
+    </property>
+    <property name="mail" type="string">
+      <column length="1" name="MAIL"/>
+    </property>
+    <property name="nivelsec" type="java.lang.Integer">
+      <column name="NIVELSEC"/>
+    </property>
+    <property name="enviosilen" type="string">
+      <column length="1" name="ENVIOSILEN"/>
+    </property>
+    <property name="emailpred" type="string">
+      <column length="60" name="EMAILPRED"/>
+    </property>
+    <property name="diarev" type="string">
+      <column length="2" name="DIAREV"/>
+    </property>
+    <property name="diapago" type="string">
+      <column length="2" name="DIAPAGO"/>
+    </property>
+    <property name="conCredito" type="string">
+      <column length="1" name="CON_CREDITO"/>
+    </property>
+    <property name="diascred" type="java.lang.Integer">
+      <column name="DIASCRED"/>
+    </property>
+    <property name="limcred" type="java.lang.Double">
+      <column name="LIMCRED" precision="15" scale="0"/>
+    </property>
+    <property name="saldo" type="java.lang.Double">
+      <column name="SALDO" precision="15" scale="0"/>
+    </property>
+    <property name="listaPrec" type="java.lang.Integer">
+      <column name="LISTA_PREC"/>
+    </property>
+    <property name="cveBita" type="java.lang.Integer">
+      <column name="CVE_BITA"/>
+    </property>
+    <property name="ultPagod" type="string">
+      <column length="20" name="ULT_PAGOD"/>
+    </property>
+    <property name="ultPagom" type="java.lang.Double">
+      <column name="ULT_PAGOM" precision="15" scale="0"/>
+    </property>
+    <property name="ultPagof" type="timestamp">
+      <column length="19" name="ULT_PAGOF"/>
+    </property>
+    <property name="descuento" type="java.lang.Double">
+      <column name="DESCUENTO" precision="15" scale="0"/>
+    </property>
+    <property name="ultVentad" type="string">
+      <column length="20" name="ULT_VENTAD"/>
+    </property>
+    <property name="ultCompm" type="java.lang.Double">
+      <column name="ULT_COMPM" precision="15" scale="0"/>
+    </property>
+    <property name="fchUltcom" type="timestamp">
+      <column length="19" name="FCH_ULTCOM"/>
+    </property>
+    <property name="ventas" type="java.lang.Double">
+      <column name="VENTAS" precision="15" scale="0"/>
+    </property>
+    <property name="cveVend" type="string">
+      <column length="5" name="CVE_VEND"/>
+    </property>
+    <property name="cveObs" type="java.lang.Integer">
+      <column name="CVE_OBS"/>
+    </property>
+    <property name="tipoEmpresa" type="string">
+      <column length="1" name="TIPO_EMPRESA"/>
+    </property>
+    <property name="matriz" type="string">
+      <column length="10" name="MATRIZ"/>
+    </property>
+    <property name="prospecto" type="string">
+      <column length="1" name="PROSPECTO"/>
+    </property>
+    <property name="calleEnvio" type="string">
+      <column length="80" name="CALLE_ENVIO"/>
+    </property>
+    <property name="numintEnvio" type="string">
+      <column length="15" name="NUMINT_ENVIO"/>
+    </property>
+    <property name="numextEnvio" type="string">
+      <column length="15" name="NUMEXT_ENVIO"/>
+    </property>
+    <property name="cruzamientosEnvio" type="string">
+      <column length="40" name="CRUZAMIENTOS_ENVIO"/>
+    </property>
+    <property name="cruzamientosEnvio2" type="string">
+      <column length="40" name="CRUZAMIENTOS_ENVIO2"/>
+    </property>
+    <property name="coloniaEnvio" type="string">
+      <column length="50" name="COLONIA_ENVIO"/>
+    </property>
+    <property name="localidadEnvio" type="string">
+      <column length="50" name="LOCALIDAD_ENVIO"/>
+    </property>
+    <property name="municipioEnvio" type="string">
+      <column length="50" name="MUNICIPIO_ENVIO"/>
+    </property>
+    <property name="estadoEnvio" type="string">
+      <column length="50" name="ESTADO_ENVIO"/>
+    </property>
+    <property name="paisEnvio" type="string">
+      <column length="50" name="PAIS_ENVIO"/>
+    </property>
+    <property name="codigoEnvio" type="string">
+      <column length="5" name="CODIGO_ENVIO"/>
+    </property>
+    <property name="cveZonaEnvio" type="string">
+      <column length="6" name="CVE_ZONA_ENVIO"/>
+    </property>
+    <property name="referenciaEnvio" type="string">
+      <column name="REFERENCIA_ENVIO"/>
+    </property>
+    <property name="cuentaContable" type="string">
+      <column length="28" name="CUENTA_CONTABLE"/>
+    </property>
+    <property name="addendaf" type="string">
+      <column name="ADDENDAF"/>
+    </property>
+    <property name="addendad" type="string">
+      <column name="ADDENDAD"/>
+    </property>
+    <property name="namespace" type="string">
+      <column name="NAMESPACE"/>
+    </property>
+    <property name="metododepago" type="string">
+      <column name="METODODEPAGO"/>
+    </property>
+    <property name="numctapago" type="string">
+      <column name="NUMCTAPAGO"/>
+    </property>
+    <property name="modelo" type="string">
+      <column name="MODELO"/>
+    </property>
+    <property name="desImpu1" type="string">
+      <column length="1" name="DES_IMPU1"/>
+    </property>
+    <property name="desImpu2" type="string">
+      <column length="1" name="DES_IMPU2"/>
+    </property>
+    <property name="desImpu3" type="string">
+      <column length="1" name="DES_IMPU3"/>
+    </property>
+    <property name="desImpu4" type="string">
+      <column length="1" name="DES_IMPU4"/>
+    </property>
+    <property name="desPer" type="string">
+      <column length="1" name="DES_PER"/>
+    </property>
+    <property name="latGeneral" type="java.lang.Double">
+      <column name="LAT_GENERAL" precision="15" scale="0"/>
+    </property>
+    <property name="lonGeneral" type="java.lang.Double">
+      <column name="LON_GENERAL" precision="15" scale="0"/>
+    </property>
+    <property name="latEnvio" type="java.lang.Double">
+      <column name="LAT_ENVIO" precision="15" scale="0"/>
+    </property>
+    <property name="lonEnvio" type="java.lang.Double">
+      <column name="LON_ENVIO" precision="15" scale="0"/>
+    </property>
+    <property name="uuid" type="string">
+      <column length="50" name="UUID"/>
+    </property>
+    <property name="versionSinc" type="timestamp">
+      <column length="19" name="VERSION_SINC"/>
+    </property>
+    <property name="usoCfdi" type="string">
+      <column length="5" name="USO_CFDI"/>
+    </property>
+    <property name="cvePaisSat" type="string">
+      <column length="5" name="CVE_PAIS_SAT"/>
+    </property>
+    <property name="numidregfiscal" type="string">
+      <column length="128" name="NUMIDREGFISCAL"/>
+    </property>
+    <property name="formadepagosat" type="string">
+      <column length="5" name="FORMADEPAGOSAT"/>
+    </property>
+  </class>
+</hibernate-mapping>

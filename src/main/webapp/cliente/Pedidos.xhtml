@@ -1,0 +1,262 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<body>
+
+	<ui:composition template="/Template/Template.xhtml">
+		<ui:define name="top">
+
+		</ui:define>
+
+
+		<ui:define name="content">
+			<h2>MÓDULO PARA LEVANTAR PEDIDOS</h2>
+			<!--Formulario para las cotizaciones-->
+			<h:form id="frmCotizaciones">
+				<p:growl id="msg" autoUpdate="true" showDetail="true" life="6000"
+					showSummary="true" />
+
+				<p:blockUI block="frmCotizaciones" trigger="registrar">
+					<h4 style="font-size: 15px; color: black">Procesando pedido...</h4>
+					<br></br>
+					<p:graphicImage value="../Images/processing.gif"
+						style="height: 100px; width: 100px"></p:graphicImage>
+				</p:blockUI>
+
+				<p:panel header="" style="margin: 0 auto;">
+
+					<h:panelGrid id="gridBuscarDatosCliente" columns="5">
+						<p:outputLabel value="CLIENTE" style="font-weight: bold" />
+
+					</h:panelGrid>
+					<p:divider style="height: 2px"/>
+					<h:panelGrid id="DatosCliente" columns="2">
+						<p:dataTable id="tblEncabezado" var="item"
+							styleClass="color: #1E90FF !important"
+							emptyMessage="Ningún cliente agregado"
+							value="#{partidaBean.listaClieRfc}" style="font-size: .8rem;">
+							<p:column headerText="RFC">
+								<h:outputText value="#{item.rfc}" />
+							</p:column>
+							<p:column headerText="NOMBRE">
+								<h:outputText value="#{item.nombre}" />
+							</p:column>
+							<p:column headerText="CORREO">
+								<h:outputText value="#{item.emailpred}" />
+							</p:column>
+							<p:column headerText="CALLE">
+								<h:outputText value="#{item.calle}" />
+							</p:column>
+							<p:column headerText="NÚMERO">
+								<h:outputText value="#{item.numext}" />
+							</p:column>
+							<p:column headerText="CÓDIGO POSTAL">
+								<h:outputText value="#{item.codigo}" />
+							</p:column>
+							<p:column headerText="ESTADO">
+								<h:outputText value="#{item.estado}" />
+							</p:column>
+						</p:dataTable>
+					</h:panelGrid>
+
+					<br></br>
+					<br></br>
+					<h:panelGrid columns="1"
+						style="font-size: 1.5rem; font-weight: bold; margin-top: 30px; margin: 0 auto; color: #1E90FF; text-align: center">
+                                    PEDIDO NO
+                                    <p:outputLabel
+							value="#{partidaBean.SERIE} #{partidaBean.ULT_DOC}" />
+
+					</h:panelGrid>
+
+
+					<p:divider style="height: 2px" />
+					<h:panelGrid id="gridPartida"
+						style="font-weight: bold; font-size: 14px" columns="3">
+						<p:commandButton id="articulo" value="Buscar artículo"
+							oncomplete="PF('dlgArticulos').show()"
+							icon="fa-solid fa-magnifying-glass"
+							update="frmCotizaciones:dlgArt"
+							style="height: 40px; width: 200px;  font-size: 16px;">
+						</p:commandButton>
+						<p:tooltip for="articulo" trackMouse="true"
+							value="Buscar artículo" />
+					</h:panelGrid>
+					<p:divider style="height: 2px" />
+					<p:dataTable id="tblArticulos" var="art" editable="true"
+						rowIndexVar="index" value="#{partidaBean.partidaCot}"
+						style="font-size: .8rem"
+						emptyMessage="Ningún artículo agregado...">
+
+						<p:ajax event="rowEdit" listener="#{partidaBean.onRowEdit}"
+							update="frmCotizaciones:tblArticulos, frmCotizaciones:mxn, frmCotizaciones:msg" />
+						<p:ajax event="rowEditCancel"
+							listener="#{partidaBean.onRowCancel}"
+							update="frmCotizaciones:tblArticulos, frmCotizaciones:mxn, frmCotizaciones:msg" />
+
+						<p:column headerText="CLAVE" style="width: 10rem">
+							<h:outputText value="#{art.cveArt}" />
+						</p:column>
+
+						<p:column headerText="DESCRIPCIÓN" style="width: 10rem">
+							<h:outputText value="#{art.descr}" />
+						</p:column>
+
+						<p:column headerText="PRECIO" style="width: 10rem">
+                                $ <h:outputText value="#{art.precio}" />
+						</p:column>
+
+						<p:column headerText="CANTIDAD" style="width: 10rem">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{art.cant}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{art.cant}" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="MONEDA" style="width: 10rem">
+							<h:outputText value="#{art.tipMon eq '1' ? 'PESOS' : 'DÓLARES'}" />
+						</p:column>
+
+						<p:column headerText="DESCUENTO %" style="width: 10rem">
+							<h:outputText value="#{art.desc1} %" />
+						</p:column>
+
+						<p:column headerText="TOTAL PARTIDA" style="width: 10rem">
+                                $ <h:outputText value="#{art.totPart}" />
+						</p:column>
+
+						<p:column headerText="EDITAR CANTIDAD" style="width: 10rem">
+							<p:rowEditor />
+						</p:column>
+
+						<p:column headerText="ELIMINAR PARTIDA" style="width: 10rem">
+							<p:commandButton id="quitar" value="Eliminar"
+								styleClass="ui-button-danger"
+								icon="fa-solid fa-trash-can-arrow-up"
+								style="height: 2.2rem; width: 8rem;  font-size: 16px;"
+								actionListener="#{partidaBean.quitar(art.cveArt, index)}"
+								update="frmCotizaciones">
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+					<p:divider style="height: 2px" />
+					<div style="text-align: center">
+						
+						 <p:badge id="mxn" value="TOTAL MXN: $ #{partidaBean.mxn}" severity="success" styleClass="ml-4" style="font-size: 1.2rem"/>
+<!-- 						<p:outputLabel id="mxn" -->
+<!-- 							style="font-weight: bold; font-size: 1.2rem; color: #FF2F0B" -->
+<!-- 							value="TOTAL MXN: $ #{partidaBean.mxn}" /> -->
+
+						<br></br>
+						<p:divider style="height: 2px" />
+						<p:commandButton id="registrar" value="Registrar pedido"
+							icon="fa-solid fa-floppy-disk"
+							style="height: 40px; width: 200px;  font-size: 16px;"
+							actionListener="#{partidaBean.guardarTodo()}" update="@form">
+						</p:commandButton>
+						<p:tooltip for="registrar" value="Registrar pedido"
+							trackMouse="true" />
+
+						<p:commandButton id="cancelar" value="Cancelar pedido actual"
+							icon="fa-solid fa-delete-left" styleClass="ui-button-warning"
+							style="height: 40px; width: 220px;  font-size: 16px;">
+						</p:commandButton>
+						<p:tooltip for="cancelar" value="Cancelar pedido"
+							trackMouse="true" />
+					</div>
+				</p:panel>
+
+
+
+
+				<!--Diálogo para mostrar artículos-->
+
+				<p:dialog id="dlgArt" widgetVar="dlgArticulos" modal="false"
+					position="top" resizable="false" header="LISTA DE ARTÍCULOS"
+					showEffect="size" hideEffect="puff" closable="true"
+					minimizable="true">
+					<p:dataTable id="tblArt" paginator="true" rows="20"
+						paginatorPosition="top" var="item" sortMode="multiple"
+						style="height: 400px; width: 900px; font-size: 12px"
+						value="#{PreciosClienteBean.listaPrecios}"
+						emptyMessage="No hay datos de cliente">
+						<p:ajax event="sort" skipChildren="false" />
+						<p:column headerText="U/M" style="width: 5rem">
+							<h:outputText value="#{item.uniMed}"/>
+						</p:column>
+						<p:column headerText="Moneda" style="width: 5rem">
+							<h:outputText value="#{item.numMon eq '1' ? 'MXN':'USD'}"/>
+						</p:column>
+						<p:column headerText="Precio" style=" width: 6rem">
+                                $<h:outputText value="#{item.precio}"/>
+						</p:column>
+						<p:column filterBy="#{item.cveArt}" style="width: 5rem"
+							sortBy="#{item.cveArt}" headerText="Clave artículo">
+							<h:outputText value="#{item.cveArt}"/>
+						</p:column>
+						<p:column filterBy="#{item.descr}" sortBy="#{item.descr}" style="width: 15rem"
+							headerText="Descripción">
+							<h:outputText value="#{item.descr}"/>
+						</p:column>
+						<p:column headerText="Seleccionar artículo" style="width: 12rem">
+							<p:commandButton id="buscar" value="Seleccionar" icon="fa-solid fa-check-to-slot" styleClass="ui-button-help"
+								actionListener="#{partidaBean.solicitarCantDesc(item.cveArt, item.descr)}"
+								onmouseover="this.backgroundColor = 'red'"
+								oncomplete="PF('dlgDescuento').show()"
+								update="frmCotizaciones:dlgDesc"
+								style="height: 2.2rem; width: 8rem;  font-size: 15px;">
+							</p:commandButton>
+							<p:tooltip for="buscar" value="Seleccionar artículo"></p:tooltip>
+						</p:column>
+
+					</p:dataTable>
+				</p:dialog>
+				<!--Diálogo para mostrar artículos-->
+
+
+				<!--Diálogo para descuentos y cantidades-->
+				<p:dialog id="dlgDesc" widgetVar="dlgDescuento"
+					style="font-size: 13px"
+					header="Artículo seleccionado: #{partidaBean.descrSeleccionada}"
+					modal="false" showEffect="explode" hideEffect="explode">
+					<h:panelGrid columns="4">
+							<p:outputLabel value="Ingresa cantidad:" />
+							<p:inputNumber id="txtCantidad" value="#{partidaBean.cantidad}"
+								placeholder="Ingrese tu cantidad" />
+							<p:commandButton value="Agregar partida"
+								icon="fa-solid fa-cart-plus" styleClass="ui-button-success"
+								actionListener="#{partidaBean.agregarPartida}"
+								update="frmCotizaciones:tblArticulos :frmCotizaciones:dlgDesc, frmCotizaciones:mxn,frmCotizaciones:msg"
+								oncomplete="PF('dlgDescuento').hide();"
+								style="height: 2.2rem; width: 10rem; font-size: 15px;">
+							</p:commandButton>
+					</h:panelGrid>
+				</p:dialog>
+				<!--Diálogo para descuentos y cantidades-->
+
+
+
+				<!--FORMULARIO PARA BUSCAR POR RFC-->
+
+			</h:form>
+			<!--Formulario para las cotizaciones-->
+
+		</ui:define>
+
+		<ui:define name="bottom">
+
+		</ui:define>
+
+	</ui:composition>
+
+</body>
+</html>

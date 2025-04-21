@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+
+		<property name="hibernate.connection.datasource">java:/MSSQLSAE</property>
+
+		<!-- Configuración del pool de conexiones (HikariCP) -->
+		<property name="hibernate.hikari.minimumPoolSize">5</property>
+		<property name="hibernate.hikari.maximumPoolSize">50</property>
+		<property name="hibernate.hikari.idleTimeout">60000</property>
+		<property name="hibernate.hikari.connectionTimeout">20000</property>
+		<property name="hibernate.hikari.maxLifetime">1800000</property>
+
+		<property name="hibernate.current_session_context_class">thread</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+		<property name="hibernate.show_sql">true</property>
+		<property name="hibernate.format_sql">true</property>
+		<property name="hibernate.current_session_context_class">thread</property>
+		<property name="hibernate.enable_lazy_load_no_trans">true</property>
+
+
+		<mapping resource="com/dmjm/model/Clie01.hbm.xml" />
+		<mapping resource="com/dmjm/model/Inve01.hbm.xml" />
+		<mapping resource="com/dmjm/model/ParFactc01.hbm.xml" />
+		<mapping resource="com/dmjm/model/Factc01.hbm.xml" />
+		<mapping resource="com/dmjm/model/Impu01.hbm.xml" />
+
+	</session-factory>
+</hibernate-configuration>

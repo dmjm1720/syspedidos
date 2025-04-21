@@ -1,0 +1,90 @@
+#frmMenu{
+    height: 0px;
+    margin-top: 15px;
+    position: relative;
+    top: 20px;
+    font-size: 11px;
+}
+#top {
+    position: relative;
+    background-color:rgb(192, 191, 188);
+    border-radius: 10px;
+    color: #CC0505;
+    padding: 15px;
+    margin: 0px 0px 70px 0px;
+
+}
+
+#bottom {
+    position: relative;
+    height: 30px;
+    border-radius: 13px;
+    text-align: center;
+    font-size: 14px;
+    background-color: #35414F;
+    color: rgb(222, 221, 218);
+    padding: 5px;
+    margin: 10px 0px 0px 0px;
+    margin-top: 3px;
+}
+
+#left {
+    float: left;
+    background-color: #ece3a5;
+    padding: 5px;
+    width: 150px;
+}
+
+#right {
+    float: right;
+    background-color: #ece3a5;
+    padding: 5px;
+    width: 150px;
+}
+
+.center_content {
+    font-size: 9px;
+    position: relative;
+    background-color: #35414F;
+    border-radius: 13px;
+    padding: 15px;
+}
+
+.left_content {
+    background-color: #036FAB;
+    padding: 5px;
+    margin-left: 170px;
+    color: rgb(246, 211, 45);
+}
+
+.right_content {
+    background-color: #85b2cb;
+    padding: 5px;
+    margin: 0px 170px 0px 170px;
+}
+
+#top a:link, #top a:visited {
+  color: #424548;
+  font-weight : bold;
+  text-decoration: none;
+}
+
+#top a:link:hover, #top a:visited:hover  {
+  color: #FFFFFF;
+  font-weight : bold;
+  text-decoration : underline;
+}
+
+#frmViaje{
+    font-size: 8.5px;
+}
+
+
+#sessionUsuario{
+    color: #036FAB;
+    font-size: 10px;
+    font-weight: bold;
+    position: absolute;
+    right: 15px;
+}
+
