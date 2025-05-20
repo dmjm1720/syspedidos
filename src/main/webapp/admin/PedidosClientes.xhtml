@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<body>
+
+	<ui:composition template="/Template/Template.xhtml">
+		<ui:define name="top">
+
+		</ui:define>
+
+
+		<ui:define name="content">
+			<h2>MIS PEDIDOS</h2>
+			<!--Formulario para las cotizaciones-->
+			<h:form id="frmPedidos">
+				<p:growl id="msg" autoUpdate="true" showDetail="true" life="6000"
+					showSummary="true" />
+
+				<p:panel header="" style="margin: 0 auto;">
+
+					<br></br>
+					<br></br>
+					<p:divider style="height: 2px" />
+					<div style="text-align: center">
+						<p:outputLabel value="LISTA DE PEDIDOS DE CLIENTES"
+							style="font-weight: bold; color: #1E90FF" />
+					</div>
+					<p:divider style="height: 2px" />
+					<p:dataTable id="tblCotizaciones" var="item" editable="true"
+						rowIndexVar="index" size="small"
+						value="#{factSaeBean.listarFacturasCotClientes}"
+						style="font-size: .9rem; font-weight: bold" sortMode="multiple"
+						scrollHeight="650" scrollWidth="99%"
+						currentPageReportTemplate="Total pedidos:#{factSaeBean.listarFacturasCotClientes.size()}"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="50,100,200,500" rows="50" paginator="true"
+						liveScroll="true" rowHover="true" paginatorAlwaysVisible="true"
+						scrollable="true" emptyMessage="No hay registros...">
+
+						<p:column headerText="DETALLE PEDIDO" style="width: 10%">
+							<p:commandButton value="Ver detalle"
+								icon="fa-solid fa-circle-info"
+								oncomplete="PF('dlgDetalle').show();"
+								update="frmPedidos:tblDetalle">
+								<f:setPropertyActionListener value="#{item}"
+									target="#{factSaeBean.fc}" />
+							</p:commandButton>
+						</p:column>
+
+						<p:column headerText="PEDIDO NO." style="width: 10%">
+							<h:outputText value="#{item.cveDoc}" />
+						</p:column>
+
+						<p:column headerText="CLAVE CLIENTE" style="width: 10%">
+							<h:outputText value="#{item.cveClpv}" />
+						</p:column>
+
+						<p:column headerText="TIPO DOCUMENTO" style="width: 10%">
+							<h:outputText value="#{item.tipDocSig}" />
+						</p:column>
+
+						<p:column headerText="PEDIDO NO" style="width: 10%">
+							<h:outputText value="#{item.docSig}" />
+						</p:column>
+
+						<p:column headerText="ESTATUS" style="width: 10%">
+							<h:outputText value="PENDIENTE" />
+						</p:column>
+
+						<p:column headerText="FECHA PEDIDO" style="width: 10%">
+							<h:outputText value="#{item.fechaDoc}" />
+						</p:column>
+
+						<p:column headerText="$ TOTAL" style="width: 10%">
+                                $ <h:outputText value="#{item.canTot}" />
+						</p:column>
+
+					</p:dataTable>
+
+					<p:dialog header="DETALLE DEL PEDIDO" widgetVar="dlgDetalle"
+						showEffect="explode" hideEffect="slide" closeOnEscape="true" minimizable="true"
+						maximizable="true">
+						<p:dataTable id="tblDetalle" var="item" editable="true"
+							rowIndexVar="index" size="small"
+							value="#{factSaeBean.listarPartidasCotizaciones}"
+							style="font-size: .9rem; font-weight: bold" sortMode="multiple"
+							scrollHeight="650" scrollWidth="50%"
+							currentPageReportTemplate="Total partidas:#{factSaeBean.listarPartidasCotizaciones.size()}"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="50,100,200,500" rows="50" paginator="true"
+							liveScroll="true" rowHover="true" paginatorAlwaysVisible="true"
+							scrollable="true" emptyMessage="Ningún artículo agregado...">
+
+							<p:column headerText="PEDIDO NO." style="width: 10%">
+								<h:outputText value="#{item.cve_doc}" />
+							</p:column>
+
+							<p:column headerText="CLAVE ARTÍCULO" style="width: 10%">
+								<h:outputText value="#{item.cve_art}" />
+							</p:column>
+							
+							<p:column headerText="DESCRIPCIÓN" style="width: 10%">
+								<h:outputText value="#{item.descr}" />
+							</p:column>
+
+							<p:column headerText="U/M" style="width: 10%">
+								<h:outputText value="#{item.uni_med}" />
+							</p:column>
+							<p:column headerText="CANTIDAD" style="width: 10%">
+								<h:outputText value="#{item.cant}" />
+							</p:column>
+							<p:column headerText="PRECIO" style="width: 10%">
+								<h:outputText value="#{item.prec}" />
+							</p:column>
+							<p:column headerText="TOTAL" style="width: 10%">
+								<h:outputText value="#{item.impu4}" />
+							</p:column>
+							<p:column headerText="DESCUENTO" style="width: 10%">
+								<h:outputText value="#{item.desc1}" />
+							</p:column>
+							<p:column headerText="TOTAL PARTIDA" style="width: 10%">
+								<h:outputText value="#{item.tot_partida}" />
+							</p:column>
+
+						</p:dataTable>
+					</p:dialog>
+
+					<div style="text-align: center"></div>
+				</p:panel>
+
+			</h:form>
+			<!--Formulario para las cotizaciones-->
+
+		</ui:define>
+
+		<ui:define name="bottom">
+
+		</ui:define>
+
+	</ui:composition>
+
+</body>
+</html>

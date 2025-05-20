@@ -34,7 +34,7 @@
 						<p:outputLabel value="CLIENTE" style="font-weight: bold" />
 
 					</h:panelGrid>
-					<p:divider style="height: 2px"/>
+					<p:divider style="height: 2px" />
 					<h:panelGrid id="DatosCliente" columns="2">
 						<p:dataTable id="tblEncabezado" var="item"
 							styleClass="color: #1E90FF !important"
@@ -150,11 +150,12 @@
 					</p:dataTable>
 					<p:divider style="height: 2px" />
 					<div style="text-align: center">
-						
-						 <p:badge id="mxn" value="TOTAL MXN: $ #{partidaBean.mxn}" severity="success" styleClass="ml-4" style="font-size: 1.2rem"/>
-<!-- 						<p:outputLabel id="mxn" -->
-<!-- 							style="font-weight: bold; font-size: 1.2rem; color: #FF2F0B" -->
-<!-- 							value="TOTAL MXN: $ #{partidaBean.mxn}" /> -->
+
+						<p:badge id="mxn" value="TOTAL MXN: $ #{partidaBean.mxn}"
+							severity="success" styleClass="ml-4" style="font-size: 1.2rem" />
+						<!-- 						<p:outputLabel id="mxn" -->
+						<!-- 							style="font-weight: bold; font-size: 1.2rem; color: #FF2F0B" -->
+						<!-- 							value="TOTAL MXN: $ #{partidaBean.mxn}" /> -->
 
 						<br></br>
 						<p:divider style="height: 2px" />
@@ -181,34 +182,39 @@
 				<!--Diálogo para mostrar artículos-->
 
 				<p:dialog id="dlgArt" widgetVar="dlgArticulos" modal="false"
-					position="top" resizable="false" header="LISTA DE ARTÍCULOS"
+					position="top" resizable="true" header="LISTA DE ARTÍCULOS"
 					showEffect="size" hideEffect="puff" closable="true"
-					minimizable="true">
-					<p:dataTable id="tblArt" paginator="true" rows="20"
+					minimizable="true" maximizable="true">
+					<p:dataTable id="tblArt" paginator="true" rows="50"
 						paginatorPosition="top" var="item" sortMode="multiple"
-						style="height: 400px; width: 900px; font-size: 12px"
+						style="height: 700px; width: 900px; font-size: 12px"
+						scrollHeight="650" scrollWidth="100%"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="50,100,200,500" 
+						liveScroll="true" rowHover="true" paginatorAlwaysVisible="true"
 						value="#{PreciosClienteBean.listaPrecios}"
 						emptyMessage="No hay datos de cliente">
 						<p:ajax event="sort" skipChildren="false" />
 						<p:column headerText="U/M" style="width: 5rem">
-							<h:outputText value="#{item.uniMed}"/>
+							<h:outputText value="#{item.uniMed}" />
 						</p:column>
 						<p:column headerText="Moneda" style="width: 5rem">
-							<h:outputText value="#{item.numMon eq '1' ? 'MXN':'USD'}"/>
+							<h:outputText value="#{item.numMon eq '1' ? 'MXN':'USD'}" />
 						</p:column>
 						<p:column headerText="Precio" style=" width: 6rem">
-                                $<h:outputText value="#{item.precio}"/>
+                                $<h:outputText value="#{item.precio}" />
 						</p:column>
 						<p:column filterBy="#{item.cveArt}" style="width: 5rem"
 							sortBy="#{item.cveArt}" headerText="Clave artículo">
-							<h:outputText value="#{item.cveArt}"/>
+							<h:outputText value="#{item.cveArt}" />
 						</p:column>
-						<p:column filterBy="#{item.descr}" sortBy="#{item.descr}" style="width: 15rem"
-							headerText="Descripción">
-							<h:outputText value="#{item.descr}"/>
+						<p:column filterBy="#{item.descr}" sortBy="#{item.descr}"
+							style="width: 15rem" headerText="Descripción">
+							<h:outputText value="#{item.descr}" />
 						</p:column>
 						<p:column headerText="Seleccionar artículo" style="width: 12rem">
-							<p:commandButton id="buscar" value="Seleccionar" icon="fa-solid fa-check-to-slot" styleClass="ui-button-help"
+							<p:commandButton id="buscar" value="Seleccionar"
+								icon="fa-solid fa-check-to-slot" styleClass="ui-button-help"
 								actionListener="#{partidaBean.solicitarCantDesc(item.cveArt, item.descr)}"
 								onmouseover="this.backgroundColor = 'red'"
 								oncomplete="PF('dlgDescuento').show()"
@@ -229,16 +235,16 @@
 					header="Artículo seleccionado: #{partidaBean.descrSeleccionada}"
 					modal="false" showEffect="explode" hideEffect="explode">
 					<h:panelGrid columns="4">
-							<p:outputLabel value="Ingresa cantidad:" />
-							<p:inputNumber id="txtCantidad" value="#{partidaBean.cantidad}"
-								placeholder="Ingrese tu cantidad" />
-							<p:commandButton value="Agregar partida"
-								icon="fa-solid fa-cart-plus" styleClass="ui-button-success"
-								actionListener="#{partidaBean.agregarPartida}"
-								update="frmCotizaciones:tblArticulos :frmCotizaciones:dlgDesc, frmCotizaciones:mxn,frmCotizaciones:msg"
-								oncomplete="PF('dlgDescuento').hide();"
-								style="height: 2.2rem; width: 10rem; font-size: 15px;">
-							</p:commandButton>
+						<p:outputLabel value="Ingresa cantidad:" />
+						<p:inputNumber id="txtCantidad" value="#{partidaBean.cantidad}"
+							placeholder="Ingrese tu cantidad" />
+						<p:commandButton value="Agregar partida"
+							icon="fa-solid fa-cart-plus" styleClass="ui-button-success"
+							actionListener="#{partidaBean.agregarPartida}"
+							update="frmCotizaciones:tblArticulos :frmCotizaciones:dlgDesc, frmCotizaciones:mxn,frmCotizaciones:msg"
+							oncomplete="PF('dlgDescuento').hide();"
+							style="height: 2.2rem; width: 10rem; font-size: 15px;">
+						</p:commandButton>
 					</h:panelGrid>
 				</p:dialog>
 				<!--Diálogo para descuentos y cantidades-->

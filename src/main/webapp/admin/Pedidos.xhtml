@@ -80,14 +80,9 @@
 					<h:panelGrid id="gridPartida"
 						style="font-weight: bold; font-size: 14px" columns="3">
 						<p:outputLabel value="BUSCAR ARTÍCULO" />
-						<p:commandButton id="articulo" value=""
-							oncomplete="PF('dlgArticulos').show()"
-							update="frmCotizaciones:dlgArt"
-							style="height: 40px; width: 40px;  font-size: 16px;>
+			
 
-						</p:commandButton>
-						<p:tooltip for="articulo" trackMouse="true"
-							value="Buscar artículo" />
+			
 					</h:panelGrid>
 					<p:separator style="height: 2px" />
 					<p:dataTable id="tblArticulos" var="art" editable="true"

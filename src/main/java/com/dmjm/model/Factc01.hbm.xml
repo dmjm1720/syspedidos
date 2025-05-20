@@ -20,13 +20,13 @@
         <property name="cvePedi" type="string">
             <column name="CVE_PEDI" length="20" />
         </property>
-        <property name="fechaDoc" type="timestamp">
+        <property name="fechaDoc" type="java.util.Date">
             <column name="FECHA_DOC" length="23" not-null="true" />
         </property>
-        <property name="fechaEnt" type="timestamp">
+        <property name="fechaEnt" type="java.util.Date">
             <column name="FECHA_ENT" length="23" />
         </property>
-        <property name="fechaVen" type="timestamp">
+        <property name="fechaVen" type="java.util.Date">
             <column name="FECHA_VEN" length="23" />
         </property>
         <property name="impTot1" type="java.lang.Double">
@@ -89,7 +89,7 @@
         <property name="cveVend" type="string">
             <column name="CVE_VEND" length="5" />
         </property>
-        <property name="fechaCancela" type="timestamp">
+        <property name="fechaCancela" type="java.util.Date">
             <column name="FECHA_CANCELA" length="23" />
         </property>
         <property name="desTot" type="java.lang.Double">
@@ -116,7 +116,7 @@
         <property name="bloq" type="string">
             <column name="BLOQ" length="1" />
         </property>
-        <property name="fechaelab" type="timestamp">
+        <property name="fechaelab" type="java.util.Date">
             <column name="FECHAELAB" length="23" />
         </property>
         <property name="ctlpol" type="java.lang.Integer">
@@ -167,7 +167,7 @@
         <property name="uuid" type="string">
             <column name="UUID" length="50" />
         </property>
-        <property name="versionSinc" type="timestamp">
+        <property name="versionSinc" type="java.util.Date">
             <column name="VERSION_SINC" length="23" />
         </property>
         <property name="formadepagosat" type="string">

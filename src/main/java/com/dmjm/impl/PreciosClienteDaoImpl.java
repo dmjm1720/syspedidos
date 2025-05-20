@@ -58,7 +58,7 @@ public class PreciosClienteDaoImpl extends Conexion implements PreciosClienteDao
 		try {
 			this.ConectarSae();
 			PreparedStatement ps = this.getCnSae().prepareStatement(
-					"SELECT PRECIO FROM PRECIO_X_PROD01 WHERE CVE_PRECIO=232 AND CVE_ART='" + art + "'");
+					"SELECT PRECIO FROM PRECIO_X_PROD01 WHERE CVE_PRECIO='"+ us.getListaPrec()+"' AND CVE_ART='" + art + "'");
 			ResultSet rs = ps.executeQuery();
 			if (!rs.isBeforeFirst()) {
 				System.out.println("No hay folios");

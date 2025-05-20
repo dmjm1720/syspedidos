@@ -53,7 +53,7 @@ public class Conexion  extends Configuracion{
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			this.cnSae = DriverManager.getConnection(getConexDBSae(),
-					getConexUser(), getConexPwd());
+					getConexUser(), getConexPwd2());
 		} catch (ClassNotFoundException | SQLException e) {
 			System.out.println(e.getMessage());
 		}

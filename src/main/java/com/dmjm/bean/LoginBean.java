@@ -57,19 +57,9 @@ public class LoginBean implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "¡BIENVENIDO!", this.usuarios.getNombre()));
 			loggedIn = true;
 			if (this.usuarios.getPerfiles().getNombrePerfil().equals("Administrador")) {
-				ruta = "/syspedidos/admin/Pedidos.html";
+				ruta = "/syspedidos/admin/PedidosClientes.html";
 			} else if (this.usuarios.getPerfiles().getNombrePerfil().equals("Cliente")) {
 				ruta = "/syspedidos/cliente/Pedidos.html";
-			} else if (this.usuarios.getPerfiles().getNombrePerfil().equals("Control de calidad")) {
-				ruta = "/syspedidos/calidad/Pedidos.html";
-			} else if (this.usuarios.getPerfiles().getNombrePerfil().equals("Gerencia")) {
-				ruta = "/syspedidos/gerencia/Pedidos.html";
-			} else if (this.usuarios.getPerfiles().getNombrePerfil().equals("Contador")) {
-				ruta = "/syspedidos/contador/Pedidos.html";
-			} else if (this.usuarios.getPerfiles().getNombrePerfil().equals("Presidencia")) {
-				ruta = "/syspedidos/presidencia/Pedidos.html";
-			}else if (this.usuarios.getPerfiles().getNombrePerfil().equals("Operador")) {
-				ruta = "/syspedidos/operador/Pedidos.html";
 			}
 
 		} else {
