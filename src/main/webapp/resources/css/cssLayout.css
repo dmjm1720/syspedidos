@@ -1,3 +1,11 @@
+
+@import
+	url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap')
+	;
+	@import
+	url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap')
+	;
+	
 #frmMenu{
     height: 0px;
     margin-top: 15px;
@@ -7,7 +15,7 @@
 }
 #top {
     position: relative;
-    background-color:rgb(192, 191, 188);
+    background-color: #000033;
     border-radius: 10px;
     color: #CC0505;
     padding: 15px;
@@ -45,7 +53,7 @@
 .center_content {
     font-size: 9px;
     position: relative;
-    background-color: #35414F;
+    /*background-color: #35414F;*/
     border-radius: 13px;
     padding: 15px;
 }
@@ -87,4 +95,28 @@
     position: absolute;
     right: 15px;
 }
+
+.p-datatable .p-datatable-tbody > tr > td {
+    padding: 2px 2px; /* Ajusta según necesidad */
+}
+
+.ui-datatable .ui-datatable-data tr:nth-child(even) {
+    background: #fbfcfc !important;
+    color: #212f3c !important;
+    font-family: "IBM Plex Sans", sans-serif;
+	font-optical-sizing: auto;
+}
+
+.ui-datatable .ui-datatable-data tr:nth-child(odd) {
+    background: #f0f3f4 !important;
+    color: #212f3c !important;
+    font-family: "IBM Plex Sans", sans-serif !important;
+	font-optical-sizing: auto;
+}
+
+.textoCentrado{
+	text-align: center !important;
+	font-size: .8rem !important; 
+}
+
 

@@ -10,6 +10,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<h:outputStylesheet name="css/default.css" />
 	<h:outputStylesheet name="css/cssLayout.css" />
+
 	<link
 		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
 		rel="stylesheet"></link>
@@ -20,16 +21,7 @@
 <h:body>
 
 	<div id="top">
-	
-	<div style="text-align: right; color:  #17202a  !important; font-size: 1rem">
-							<p size="small">Sesión iniciada: #{loginBean.usuarios.nombre} |
-								Perfil: #{loginBean.usuarios.perfiles.nombrePerfil}</p>
-						</div>
-	
-		<h1>
-			<!-- 			<h:graphicImage url="/Images/logo.png" height="3%" width="3%" /> -->
-			<!-- 			<br></br>SISTEMA DE PEDIDOS -->
-		</h1>
+
 		<ui:insert name="top">Top</ui:insert>
 		<div id="frmMenu">
 			<div class="card">
@@ -40,7 +32,8 @@
 
 
 
-					<p:menubar hideDelay="1000" rendered="#{loginBean.usuarios.perfiles.idPerfil==1}">>
+					<p:menubar hideDelay="1000"
+						rendered="#{loginBean.usuarios.perfiles.idPerfil==1}">>
 						<f:facet name="start">
 							<p:graphicImage name="images/primefaces-logo.svg"
 								library="showcase" />
@@ -50,23 +43,24 @@
 							<p:menuitem value="Pedidos clientes" icon="pi pi-fw pi-bookmark"
 								outcome="PedidosClientes" />
 
-
 						</p:submenu>
-
 
 						<p:menuitem value="Cerrar sesión" icon="pi pi-fw pi-power-off"
 							action="/index?faces-redirect=true"
 							actionListener="#{loginBean.cerrarSesion()}" />
 
 						<p:divider layout="vertical" />
-						
-						<p:menuitem value="Sesión iniciada: #{login.usuario.nombre} |
-								Perfil: #{login.usuario.perfiles.nombrePerfil}" icon="pi pi-fw pi-power-off"/>
+
+						<p:menuitem
+							value="Sesión iniciada: #{loginBean.usuarios.nombre} |
+								Perfil: #{loginBean.usuarios.perfiles.nombrePerfil}"
+							icon="pi pi-fw pi-users" />
 
 					</p:menubar>
-					
-					
-					<p:menubar hideDelay="1000" rendered="#{loginBean.usuarios.perfiles.idPerfil==2}">>
+
+
+					<p:menubar hideDelay="1000"
+						rendered="#{loginBean.usuarios.perfiles.idPerfil==2}">>
 						<f:facet name="start">
 							<p:graphicImage name="images/primefaces-logo.svg"
 								library="showcase" />
@@ -80,15 +74,15 @@
 
 						</p:submenu>
 
-
 						<p:menuitem value="Cerrar sesión" icon="pi pi-fw pi-power-off"
 							action="/index?faces-redirect=true"
 							actionListener="#{loginBean.cerrarSesion()}" />
-
 						<p:divider layout="vertical" />
-						
-						<p:menuitem value="Sesión iniciada: #{login.usuario.nombre} |
-								Perfil: #{login.usuario.perfiles.nombrePerfil}" icon="pi pi-fw pi-power-off"/>
+
+						<p:menuitem
+							value="Sesión iniciada: #{loginBean.usuarios.nombre} |
+								Perfil: #{loginBean.usuarios.perfiles.nombrePerfil}"
+							icon="pi pi-fw pi-users" />
 
 					</p:menubar>
 

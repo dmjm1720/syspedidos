@@ -23,40 +23,6 @@
 
 				<p:panel header="" style="margin: 0 auto;">
 
-					<h:panelGrid id="gridBuscarDatosCliente" columns="5">
-						<p:outputLabel value="CLIENTE" style="font-weight: bold" />
-
-					</h:panelGrid>
-					<p:divider style="height: 2px" />
-					<h:panelGrid id="DatosCliente" columns="2">
-						<p:dataTable id="tblEncabezado" var="item"
-							styleClass="color: #1E90FF !important"
-							emptyMessage="Ningún cliente agregado"
-							value="#{partidaBean.listaClieRfc}"
-							style="font-size: 1rem; font-weight: bold">
-							<p:column headerText="RFC">
-								<h:outputText value="#{item.rfc}" />
-							</p:column>
-							<p:column headerText="NOMBRE">
-								<h:outputText value="#{item.nombre}" />
-							</p:column>
-							<p:column headerText="CORREO">
-								<h:outputText value="#{item.emailpred}" />
-							</p:column>
-							<p:column headerText="CALLE">
-								<h:outputText value="#{item.calle}" />
-							</p:column>
-							<p:column headerText="NÚMERO">
-								<h:outputText value="#{item.numext}" />
-							</p:column>
-							<p:column headerText="CÓDIGO POSTAL">
-								<h:outputText value="#{item.codigo}" />
-							</p:column>
-							<p:column headerText="ESTADO">
-								<h:outputText value="#{item.estado}" />
-							</p:column>
-						</p:dataTable>
-					</h:panelGrid>
 					<br></br>
 					<br></br>
 					<p:divider style="height: 2px" />
@@ -67,72 +33,173 @@
 					<p:divider style="height: 2px" />
 					<p:dataTable id="tblCotizaciones" var="item" editable="true"
 						rowIndexVar="index" size="small"
-						value="#{factSaeBean.listarFacturasCotizaciones}"
-						style="font-size: .9rem; font-weight: bold" sortMode="multiple"
-						scrollHeight="650" scrollWidth="99%"
-						currentPageReportTemplate="Total pedidos:#{factSaeBean.listarFacturasCotizaciones.size()}"
+						value="#{factSaeBean.listaFacturasEncabezadosClientes}"
+						styleClass="textoCentrado" sortMode="multiple" scrollHeight="650"
+						scrollWidth="99%"
+						currentPageReportTemplate="Total pedidos:#{factSaeBean.listaFacturasEncabezadosClientes.size()}"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="50,100,200,500" rows="50" paginator="true"
-						liveScroll="true" rowHover="true" paginatorAlwaysVisible="true"
-						scrollable="true" emptyMessage="Ningún artículo agregado...">
+						rowHover="true" paginatorAlwaysVisible="true" scrollable="true"
+						emptyMessage="No hay registros...">
 
-						<p:column headerText="DETALLE PEDIDO" style="width: 10%">
-							<p:commandButton value="Ver detalle" icon="fa-solid fa-circle-info"
-								update="frmPedidos:tblDetalle" onclick="PF('dlgDetalle').show()">
+						<p:column headerText="DETALLE" style="width: 10rem"
+							styleClass="textoCentrado">
+							<p:commandButton value="Ver detalle" styleClass="btn btn-info"
+								icon="fa-solid fa-circle-info"
+								oncomplete="PF('dlgDetalle').show();"
+								update="frmPedidos:tblDetalle">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{factSaeBean.fc}" />
+									target="#{factSaeBean.encabezadoFact}" />
 							</p:commandButton>
 						</p:column>
 
-						<p:column headerText="PEDIDO NO." style="width: 10%">
-							<h:outputText value="#{item.cveDoc}" />
+						<p:column headerText="CLAVE CLIENTE" 
+							style="width: 6rem;" styleClass="textoCentrado">
+							<h:outputText value="#{item.clave}" />
 						</p:column>
 
-						<p:column headerText="ESTATUS" style="width: 10%">
-							<h:outputText value="PENDIENTE" />
+						<p:column headerText="NOMBRE" 
+							style="width: 15rem" styleClass="textoCentrado">
+							<h:outputText value="#{item.nombre}" />
 						</p:column>
 
-						<p:column headerText="FECHA PEDIDO" style="width: 10%">
-							<h:outputText value="#{item.fechaDoc}" />
+						<p:column headerText="RFC" 
+							style="width: 10rem" styleClass="textoCentrado">
+							<h:outputText value="#{item.rfc}" />
 						</p:column>
 
-						<p:column headerText="$ TOTAL" style="width: 10%">
-                                $ <h:outputText value="#{item.canTot}" />
+						<p:column headerText="NO. PEDIDO" filterBy="#{item.cve_doc}"
+							style="width: 6rem" styleClass="textoCentrado">
+							<h:outputText value="#{item.cve_doc}" />
 						</p:column>
+
+						<p:column headerText="ESTATUS" filterBy="#{item.estatus}" sortBy="#{item.estatus}"
+							style="width: 10rem" styleClass="textoCentrado">
+							<h:outputText value="#{item.estatus}" />
+						</p:column>
+
+						<p:column headerText="FECHA" filterBy="#{item.fecha_ent}"
+							style="width: 10rem">
+							<h:outputText value="#{item.fecha_ent}" />
+						</p:column>
+
+						<p:column headerText="FECHA VENCIMIENTO"
+							filterBy="#{item.fecha_ven}" style="width: 10rem"
+							styleClass="textoCentrado">
+							<h:outputText value="#{item.fecha_ven}" />
+						</p:column>
+
+						<p:column headerText="FECHA CANCELACIÓN"
+							filterBy="#{item.fecha_cancela}" style="width: 10rem"
+							styleClass="textoCentrado">
+							<h:outputText value="#{item.fecha_cancela}" />
+						</p:column>
+
+						<p:column headerText="SUBTOTAL" style="width: 10rem"
+							styleClass="textoCentrado">
+							<h:outputText value="#{item.can_tot}">
+								<f:convertNumber type="currency" currencySymbol="$"
+									locale="en_US" groupingUsed="true" maxFractionDigits="2" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="DESCUENTO" style="width: 10rem"
+							styleClass="textoCentrado">
+							<h:outputText value="#{item.des_tot}">
+								<f:convertNumber type="currency" currencySymbol="$"
+									locale="en_US" groupingUsed="true" maxFractionDigits="2" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="IVA" style="width: 10rem"
+							styleClass="textoCentrado">
+							<h:outputText value="#{item.imp_tot4}">
+								<f:convertNumber type="currency" currencySymbol="$"
+									locale="en_US" groupingUsed="true" maxFractionDigits="2" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="TOTAL" style="width: 10rem"
+							styleClass="textoCentrado">
+							<h:outputText value="#{item.importe}">
+								<f:convertNumber type="currency" currencySymbol="$"
+									locale="en_US" groupingUsed="true" maxFractionDigits="2" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="MÉTODO DE PAGO" style="width: 10rem"
+							styleClass="textoCentrado">
+							<h:outputText value="#{item.metopago}" />
+						</p:column>
+
+						<p:column headerText="Tipo de documento anterior"
+							style="width: 10rem" styleClass="textoCentrado">
+							<h:outputText value="#{item.tip_doc_ant}" />
+						</p:column>
+
+						<p:column headerText="Documento anterior" style="width: 10rem"
+							styleClass="textoCentrado">
+							<h:outputText value="#{item.doc_ant}" />
+						</p:column>
+
+						<p:column headerText="Tipo de documento siguiente"
+							style="width: 10rem">
+							<h:outputText value="#{item.tip_doc_sig}" />
+						</p:column>
+						<p:column headerText="Documento siguiente" style="width: 10rem"
+							styleClass="textoCentrado">
+							<h:outputText value="#{item.doc_sig}" />
+						</p:column>
+
 
 					</p:dataTable>
 
 					<p:dialog header="DETALLE DEL PEDIDO" widgetVar="dlgDetalle"
-						showEffect="fade" closeOnEscape="true" minimizable="true"
-						maximizable="true">
+						showEffect="explode" hideEffect="slide" closeOnEscape="true"
+						minimizable="true" maximizable="true">
 						<p:dataTable id="tblDetalle" var="item" editable="true"
 							rowIndexVar="index" size="small"
-							value="#{factSaeBean.listaPartidasCotizaciones}"
-							style="font-size: .9rem; font-weight: bold" sortMode="multiple"
-							scrollHeight="650" scrollWidth="50%"
-							currentPageReportTemplate="Total partidas:#{factSaeBean.listaPartidasCotizaciones.size()}"
+							value="#{factSaeBean.listarPartidasCotizaciones}"
+							style="font-size: .9rem;" sortMode="multiple" scrollHeight="650"
+							scrollWidth="60%"
+							currentPageReportTemplate="Total partidas:#{factSaeBean.listarPartidasCotizaciones.size()}"
 							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="50,100,200,500" rows="50" paginator="true"
 							liveScroll="true" rowHover="true" paginatorAlwaysVisible="true"
 							scrollable="true" emptyMessage="Ningún artículo agregado...">
 
-							<p:column headerText="PEDIDO NO." style="width: 10%">
-								<h:outputText value="#{item.cveDoc}" />
+							<p:column headerText="PEDIDO NO." style="width: 5rem">
+								<h:outputText value="#{item.cve_doc}" />
 							</p:column>
 
-							<p:column headerText="CLAVE ARTÍCULO" style="width: 10%">
-								<h:outputText value="#{item.cveArt}" />
+							<p:column headerText="CLAVE ARTÍCULO" style="width: 6rem">
+								<h:outputText value="#{item.cve_art}" />
 							</p:column>
 
-							<p:column headerText="U/M" style="width: 10%">
-								<h:outputText value="#{item.cveUnidad}" />
+							<p:column headerText="DESCRIPCIÓN" style="width: 20rem">
+								<h:outputText value="#{item.descr}" />
 							</p:column>
-							<p:column headerText="CANTIDAD" style="width: 10%">
+
+							<p:column headerText="U/M" style="width: 4rem">
+								<h:outputText value="#{item.uni_med}" />
+							</p:column>
+							<p:column headerText="CANTIDAD" style="width: 4rem">
 								<h:outputText value="#{item.cant}" />
+							</p:column>
+							<p:column headerText="PRECIO" style="width: 4rem">
+								<h:outputText value="#{item.prec}" />
+							</p:column>
+							<p:column headerText="TOTAL" style="width: 4rem">
+								<h:outputText value="#{item.impu4}" />
+							</p:column>
+							<p:column headerText="DESCUENTO" style="width: 5rem">
+								<h:outputText value="#{item.desc1}" />
+							</p:column>
+							<p:column headerText="TOTAL PARTIDA" style="width: 4rem">
+								<h:outputText value="#{item.tot_partida}" />
 							</p:column>
 
 						</p:dataTable>
-
 					</p:dialog>
 
 					<div style="text-align: center"></div>

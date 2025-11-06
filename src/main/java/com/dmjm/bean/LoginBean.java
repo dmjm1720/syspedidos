@@ -11,18 +11,20 @@ import javax.inject.Named;
 
 import org.primefaces.PrimeFaces;
 
+import com.dmjm.dao.ClienteDao;
 import com.dmjm.dao.UsuarioDao;
+import com.dmjm.impl.ClienteDaoImpl;
 import com.dmjm.impl.UsuarioDaoImpl;
+import com.dmjm.model.Clie01;
 import com.dmjm.model.Usuarios;
 
 @Named(value = "loginBean")
 @SessionScoped
 public class LoginBean implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private Usuarios usuarios;
-
-
+	private static final long serialVersionUID = 1L;
+	private Usuarios usuarios;
+	private Clie01 cliente;
 
 	public Usuarios getUsuarios() {
 		return usuarios;
@@ -30,6 +32,14 @@ public class LoginBean implements Serializable {
 
 	public void setUsuario(Usuarios usuarios) {
 		this.usuarios = usuarios;
+	}
+
+	public Clie01 getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Clie01 cliente) {
+		this.cliente = cliente;
 	}
 
 	public LoginBean() {
@@ -41,15 +51,16 @@ public class LoginBean implements Serializable {
 		this.usuarios = new Usuarios();
 	}
 
-    public void login(ActionEvent event) throws InterruptedException {
-    	boolean loggedIn = false;
+	public void login(ActionEvent event) throws InterruptedException {
+		boolean loggedIn = false;
 		String ruta = "";
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		this.usuarios = usuarioDao.login(this.usuarios);
 
 		if (this.usuarios != null) {
-			//LOGGER.info("SESIÓN INICIADA: " + usuarios.getNombre());
 
+			ClienteDao cDao = new ClienteDaoImpl();
+			cliente = cDao.cliente(usuarios.getRfc());
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("nombre", usuarios);
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rol",
 					usuarios.getPerfiles().getNombrePerfil());

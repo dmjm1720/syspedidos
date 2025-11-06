@@ -138,4 +138,20 @@ public class ClienteDaoImpl implements ClienteDao {
         return lista;
     }
 
+	@Override
+	public Clie01 cliente(String rfc) {
+		Clie01 cliente = new Clie01();
+	        Session session = HibernateUtilSae.getSessionFactory().openSession();
+	        Transaction t = session.beginTransaction();
+	        String hql = "FROM Clie01 WHERE rfc ='" + rfc +"' AND status='A'";
+	        try {
+	        	cliente = (Clie01) session.createQuery(hql).uniqueResult();
+	            t.commit();
+	            session.close();
+	        } catch (HibernateException e) {
+	            t.rollback();
+	        }
+	        return cliente;
+	}
+
 }

@@ -79,12 +79,18 @@ public class PartidaBean extends Conexion implements Serializable {
 	private Inve01 inve;
 	private Impu01 impu;
 	private String clasificacion;
-	
+
 	private double tot_imp4;
+
+	private Double cantidadTotal;
+	private Double impuestoTotal;
+	private Double descuentoTotal;
+	private Double ct = 0.0;
+	private Double it = 0.0;
+	private Double dt = 0.0;
+	private Double imp = 0.0;
+
 	Usuarios us = (Usuarios) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("nombre");
-
-
-
 
 	public PartidaBean() {
 //		this.partidaCot = new ArrayList<>();
@@ -114,6 +120,46 @@ public class PartidaBean extends Conexion implements Serializable {
 		PartidaDao pDao = new PartidaDaoImpl();
 		listaPartidas = pDao.listaPartida();
 		return listaPartidas;
+	}
+
+	public double getTot_imp4() {
+		return tot_imp4;
+	}
+
+	public void setTot_imp4(double tot_imp4) {
+		this.tot_imp4 = tot_imp4;
+	}
+
+	public Double getIt() {
+		return it;
+	}
+
+	public void setIt(Double it) {
+		this.it = it;
+	}
+
+	public Double getImp() {
+		return imp;
+	}
+
+	public void setImp(Double imp) {
+		this.imp = imp;
+	}
+
+	public Double getCt() {
+		return ct;
+	}
+
+	public void setCt(Double ct) {
+		this.ct = ct;
+	}
+
+	public Double getDt() {
+		return dt;
+	}
+
+	public void setDt(Double dt) {
+		this.dt = dt;
 	}
 
 	public void setListaPartidas(List<Partida> listaPartidas) {
@@ -379,8 +425,7 @@ public class PartidaBean extends Conexion implements Serializable {
 			element.setTotPart(element.getCant() * element.getPrecio());
 			if (element.getTipMon().equals(1)) {
 				this.mxn += (element.getPrecio() * element.getCant())
-						- (element.getPrecio() * element.getCant() * element.getDesc1()
-								/ 100);
+						- (element.getPrecio() * element.getCant() * element.getDesc1() / 100);
 			}
 
 		}
@@ -440,8 +485,8 @@ public class PartidaBean extends Conexion implements Serializable {
 
 	public void guardarTodo() throws SQLException {
 		buscarFolio();
-		guardarPartidas();
 		guardarEncabezado();
+		guardarPartidas();
 		actualizarFolio();
 		// this.enviarCorreo.enviarCorreo(SERIE, TIP_DOC, clave);
 		FacesContext.getCurrentInstance().addMessage(null,
@@ -457,16 +502,20 @@ public class PartidaBean extends Conexion implements Serializable {
 
 	public void guardarEncabezado() throws SQLException {
 		this.ConectarSae();
+		this.ConectarSysPedidos();
 		Statement st = this.getCnSae().createStatement();
+		Statement stp = this.getCnSysPedidos().createStatement();
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String fecha = dateFormat.format(cal.getTime());
+		
 		for (Clie01 element : listaClieRfc) {
 			this.CLAVE_PROV = element.getClave();
 			this.RFC_PROV = element.getRfc();
 			clasificacion = element.getClasific();
-			LOGGER.info("********************************************************************************");
-			LOGGER.info("CLIENTE: " + element.getNombre()+ " CLASIFICACIÓN: " + clasificacion);
+			LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+			LOGGER.info("");
+			LOGGER.info("CLIENTE: " + element.getNombre() + " CLASIFICACIÓN: " + clasificacion);
 		}
 
 		st.executeUpdate("INSERT INTO FACTC01"
@@ -475,19 +524,38 @@ public class PartidaBean extends Conexion implements Serializable {
 				+ "CVE_OBS, NUM_ALMA, ACT_CXC, ACT_COI, ENLAZADO, TIP_DOC_E, NUM_MONED, TIPCAMB, NUM_PAGOS, FECHAELAB, "
 				+ "PRIMERPAGO, RFC, CTLPOL, ESCFD, AUTORIZA, SERIE, FOLIO, AUTOANIO, DAT_ENVIO, CONTADO, "
 				+ "CVE_BITA, BLOQ, FORMAENVIO, DES_FIN_PORC, DES_TOT_PORC, IMPORTE, COM_TOT_PORC, METODODEPAGO, NUMCTAPAGO, TIP_DOC_ANT, "
-				+ "DOC_ANT, TIP_DOC_SIG, DOC_SIG, UUID, VERSION_SINC, FORMADEPAGOSAT, USO_CFDI)"
-				+ "VALUES('C', '                " + ULT_DOC + "', '" + CLAVE_PROV + "', 'E', 0, '', '', '" + fecha
-				+ "', '" + fecha + "', '" + fecha + "'," + " NULL, '" + this.mxn + "', 0, 0, 0, '" + this.mxn * .16
-				+ "', 0, 0, 0, 'CONDICION'," + " 0, 1, 'S', 'N', 'O', 'O', 1, 1, 1, '" + fecha + "', " + "0, '"
-				+ this.RFC_PROV + "', 0, 'N', 0, '" + this.SERIE + "', '" + this.ULT_DOC + "', '', 528, 'N', "
-				+ "2537, 'N', 'I', 0, 0, '" + this.mxn + "', 0, NULL, NULL, NULL, " + "NULL, NULL, NULL, 'UUID', '"
-				+ fecha + "', NULL, NULL);");
+				+ "DOC_ANT, TIP_DOC_SIG, DOC_SIG, UUID, VERSION_SINC, FORMADEPAGOSAT, USO_CFDI)" + "VALUES('C', 'C"
+				+ ULT_DOC + "', '" + CLAVE_PROV + "', 'E', 0, '', '', '" + fecha + "', '" + fecha + "', '" + fecha
+				+ "'," + " NULL, '" + this.mxn + "', 0, 0, 0, '" + this.mxn * .16 + "', 0, 0, 0, '',"
+				+ " 0, 1, 'S', 'N', 'O', 'O', 1, 1, 1, '" + fecha + "', " + "0, '" + this.RFC_PROV + "', 0, 'N', 0, '"
+				+ this.SERIE + "', '" + this.ULT_DOC + "', '', NULL, 'N', " + "2537, 'N', 'I', 0, 0, '" + this.mxn
+				+ "', 0, NULL, NULL, NULL, " + "NULL, NULL, NULL, '', '" + fecha + "', NULL, NULL);");
+
+		
+		stp.executeUpdate("INSERT INTO FACTC01"
+				+ "(TIP_DOC, CVE_DOC, CVE_CLPV, STATUS, DAT_MOSTR, CVE_VEND, CVE_PEDI, FECHA_DOC, FECHA_ENT, FECHA_VEN, "
+				+ "FECHA_CANCELA, CAN_TOT, IMP_TOT1, IMP_TOT2, IMP_TOT3, IMP_TOT4, DES_TOT, DES_FIN, COM_TOT, CONDICION, "
+				+ "CVE_OBS, NUM_ALMA, ACT_CXC, ACT_COI, ENLAZADO, TIP_DOC_E, NUM_MONED, TIPCAMB, NUM_PAGOS, FECHAELAB, "
+				+ "PRIMERPAGO, RFC, CTLPOL, ESCFD, AUTORIZA, SERIE, FOLIO, AUTOANIO, DAT_ENVIO, CONTADO, "
+				+ "CVE_BITA, BLOQ, FORMAENVIO, DES_FIN_PORC, DES_TOT_PORC, IMPORTE, COM_TOT_PORC, METODODEPAGO, NUMCTAPAGO, TIP_DOC_ANT, "
+				+ "DOC_ANT, TIP_DOC_SIG, DOC_SIG, UUID, VERSION_SINC, FORMADEPAGOSAT, USO_CFDI)" + "VALUES('C', 'C"
+				+ ULT_DOC + "', '" + CLAVE_PROV + "', 'E', 0, '', '', '" + fecha + "', '" + fecha + "', '" + fecha
+				+ "'," + " NULL, '" + this.mxn + "', 0, 0, 0, '" + this.mxn * .16 + "', 0, 0, 0, '',"
+				+ " 0, 1, 'S', 'N', 'O', 'O', 1, 1, 1, '" + fecha + "', " + "0, '" + this.RFC_PROV + "', 0, 'N', 0, '"
+				+ this.SERIE + "', '" + this.ULT_DOC + "', '', NULL, 'N', " + "2537, 'N', 'I', 0, 0, '" + this.mxn
+				+ "', 0, NULL, NULL, NULL, " + "NULL, NULL, NULL, '', '" + fecha + "', NULL, NULL);");
 		this.CerrarSae();
+		this.CerrarSysPedidos();
+
 	}
 
 	public void guardarPartidas() throws SQLException {
 		this.ConectarSae();
+		this.ConectarSysPedidos();
+		
 		Statement st = this.getCnSae().createStatement();
+		Statement stp = this.getCnSysPedidos().createStatement();
+		
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String fecha = dateFormat.format(cal.getTime());
@@ -501,44 +569,84 @@ public class PartidaBean extends Conexion implements Serializable {
 
 			LOGGER.info("DESCRICIÓN: " + p.getDescr() + " U/M:" + inve01.getUniMed());
 			LOGGER.info("CLAVE ESQ IMPU: " + inve01.getCveEsqimpu());
+			LOGGER.info("MAN IEPS: " + inve01.getManIeps());
+			LOGGER.info("APL MAN IMP: " + inve01.getAplManImp());
+			LOGGER.info("CUOTA IEPS: " + inve01.getCuotaIeps());
+			LOGGER.info("APL MAN IEPS: " + inve01.getAplManIeps());
+			LOGGER.info("CVE PRODSERV: " + inve01.getCveProdserv());
+			LOGGER.info("CVE UNIDAD: " + inve01.getCveUnidad());
 
 			LOGGER.info(impu01.getImpuesto1() + " " + impu01.getImpuesto2() + " " + impu01.getImpuesto3() + " "
 					+ impu01.getImpuesto4() + " " + impu01.getImpuesto5() + " " + impu01.getImpuesto6() + " "
 					+ impu01.getImpuesto7() + " " + impu01.getImpuesto8());
-			LOGGER.info(impu01.getImp1aplica() + " " + impu01.getImp2aplica() + " " + impu01.getImp3aplica()
-					+ " " + impu01.getImp4aplica() + " " + impu01.getImp5aplica() + " " + impu01.getImp6aplica() + " "
+			LOGGER.info(impu01.getImp1aplica() + " " + impu01.getImp2aplica() + " " + impu01.getImp3aplica() + " "
+					+ impu01.getImp4aplica() + " " + impu01.getImp5aplica() + " " + impu01.getImp6aplica() + " "
 					+ impu01.getImp7aplica() + " " + impu01.getImp8aplica());
-			String descr [] =p.getDescr().split(" ");
+			String descr[] = p.getDescr().split(" ");
 			LOGGER.info("BUSCAR DESCUENTO PARA: " + descr[0]);
 			double calcularDescuento = 0.0;
-			double descuentoArticulo=0.0;
+			double descuentoArticulo = 0.0;
 			descuentoArticulo = politicasDescuentoValor(descr[0], clasificacion);
-			calcularDescuento = (impu01.getImpuesto4()/100) * (p.getCant()* p.getPrecio()) -((impu01.getImpuesto4()/100) * (p.getCant()* p.getPrecio())*descuentoArticulo);
-			LOGGER.info("CANTIDAD: "+p.getCant());
-			LOGGER.info("PRECIO: "+p.getPrecio());
-			LOGGER.info("TOTAL PARTIDA: "+p.getPrecio()*p.getCant());
-			LOGGER.info("DESCUENTO: "+ politicasDescuentoValor(descr[0], clasificacion));
-			LOGGER.info("PARTE 1: "+(impu01.getImpuesto4()/100) * (p.getCant()* p.getPrecio()));
-			LOGGER.info("PARTE 2: "+((impu01.getImpuesto4()/100) * (p.getCant()* p.getPrecio()) * descuentoArticulo));
-			LOGGER.info("CALCULO DEL DESCUENTO: "+ calcularDescuento);
+			calcularDescuento = (impu01.getImpuesto4() / 100) * (p.getCant() * p.getPrecio())
+					- ((impu01.getImpuesto4() / 100) * (p.getCant() * p.getPrecio()) * descuentoArticulo);
+			LOGGER.info("CANTIDAD: " + p.getCant());
+			LOGGER.info("PRECIO: " + p.getPrecio());
+			LOGGER.info("TOTAL PARTIDA: " + p.getPrecio() * p.getCant());
+			LOGGER.info("DESCUENTO: " + politicasDescuentoValor(descr[0], clasificacion));
+			LOGGER.info("PARTE 1: " + (impu01.getImpuesto4() / 100) * (p.getCant() * p.getPrecio()));
+			LOGGER.info(
+					"PARTE 2: " + ((impu01.getImpuesto4() / 100) * (p.getCant() * p.getPrecio()) * descuentoArticulo));
+			LOGGER.info("CALCULO DEL DESCUENTO: " + calcularDescuento);
 			LOGGER.info("********************************************************************************");
+			int folioCtrlAlm = 0;
+			if (descr[0].equals("ESENCIA")) {
+				folioCtrlAlm = 5;
+			} else {
+				folioCtrlAlm = buscarNumAlmaceLTPD(p.getCveArt());
+			}
 
-			st.executeUpdate("INSERT INTO PAR_FACTC01\n"
-					+ "(CVE_DOC, NUM_PAR, CVE_ART, CANT, PXS, PREC, COST, "
+			st.executeUpdate("INSERT INTO PAR_FACTC01\n" + "(CVE_DOC, NUM_PAR, CVE_ART, CANT, PXS, PREC, COST, "
 					+ "IMPU1, IMPU2, IMPU3, IMPU4, IMP1APLA, IMP2APLA, IMP3APLA, IMP4APLA, "
 					+ "TOTIMP1, TOTIMP2, TOTIMP3, TOTIMP4, DESC1, DESC2, DESC3, "
 					+ "COMI, APAR, ACT_INV, NUM_ALM, POLIT_APLI, TIP_CAM, UNI_VENTA, TIPO_PROD, CVE_OBS, REG_SERIE, E_LTPD, TIPO_ELEM, NUM_MOV, "
-					+ "TOT_PARTIDA, IMPRIMIR, MAN_IEPS, APL_MAN_IMP, CUOTA_IEPS, APL_MAN_IEPS, MTO_PORC, MTO_CUOTA, CVE_ESQ, DESCR_ART, UUID, VERSION_SINC, TOTIMP8, TOTIMP7, TOTIMP6, TOTIMP5, IMP8APLA, IMP7APLA, IMP6APLA, IMP5APLA, IMPU8, IMPU7, IMPU6, IMPU5)\n"
-					+ "VALUES('                " + ULT_DOC + "', '" + part + "', '" + p.getCveArt() + "', '" + p.getCant() + "', '" + p.getCant() + "', '" + p.getPrecio() + "','" + p.getPrecio() + "'"
-							+ ",'" + impu01.getImpuesto1() + "', '" + impu01.getImpuesto2() + "','" + impu01.getImpuesto3() + "','" + impu01.getImpuesto4() + "','" +impu01.getImp1aplica() +"','" +impu01.getImp2aplica() +"','" +impu01.getImp3aplica() +"','" +impu01.getImp4aplica() +"'"
-									+ ", 0, 0, 0, '"+ calcularDescuento +"', '"+ politicasDescuentoValor(descr[0], clasificacion)*100 +"', 0, 0,"
-									+ " 0, 0, 'N', 1, '', 1, '" + inve01.getUniMed() + "', 'P', 0, 0, 0, 'N', 0, '"
-					+ (p.getCant() * p.getPrecio()) + "', NULL, 'N', NULL, NULL, NULL, NULL, NULL, '"+ inve01.getCveEsqimpu() +"', NULL, '', '"
-					+ fecha + "', 0, 0, 0, 0, '" + impu01.getImp8aplica() + "', '" + impu01.getImp7aplica() + "', '" + impu01.getImp6aplica() + "', '" + impu01.getImp5aplica() +"', '" + impu01.getImpuesto8() + "', '" + impu01.getImpuesto7() + "', '" + impu01.getImpuesto6() + "', '" + impu01.getImpuesto5() + "');");
+					+ "TOT_PARTIDA, IMPRIMIR, MAN_IEPS, APL_MAN_IMP, CUOTA_IEPS, APL_MAN_IEPS, MTO_PORC, MTO_CUOTA, CVE_ESQ, DESCR_ART, UUID, CVE_UNIDAD, CVE_PRODSERV, VERSION_SINC, TOTIMP8, TOTIMP7, TOTIMP6, TOTIMP5, IMP8APLA, IMP7APLA, IMP6APLA, IMP5APLA, IMPU8, IMPU7, IMPU6, IMPU5)\n"
+					+ "VALUES('C" + ULT_DOC + "', '" + part + "', '" + p.getCveArt() + "', '" + p.getCant() + "', '"
+					+ p.getCant() + "', '" + p.getPrecio() + "','" + p.getPrecio() + "'" + ",'" + impu01.getImpuesto1()
+					+ "', '" + impu01.getImpuesto2() + "','" + impu01.getImpuesto3() + "','" + impu01.getImpuesto4()
+					+ "','" + impu01.getImp1aplica() + "','" + impu01.getImp2aplica() + "','" + impu01.getImp3aplica()
+					+ "','" + impu01.getImp4aplica() + "'" + ", 0, 0, 0, '" + calcularDescuento + "', '"
+					+ politicasDescuentoValor(descr[0], clasificacion) * 100 + "', 0, 0," + " 0, 0, 'N', '"
+					+ folioCtrlAlm + "', '', 1, '" + inve01.getUniMed() + "', 'P', 0, 0, 0, 'N', 0, '"
+					+ (p.getCant() * p.getPrecio()) + "', NULL, '"+ inve01.getManIeps() +"', '"+ inve01.getAplManImp() +"', '"+inve01.getCuotaIeps()+"', '"+inve01.getAplManIeps()+"', NULL, NULL, '"
+					+ inve01.getCveEsqimpu() + "', NULL, '','"+ inve01.getCveUnidad() +"', '"+ inve01.getCveProdserv() +"', '" + fecha + "', 0, 0, 0, 0, '" + impu01.getImp8aplica()
+					+ "', '" + impu01.getImp7aplica() + "', '" + impu01.getImp6aplica() + "', '"
+					+ impu01.getImp5aplica() + "', '" + impu01.getImpuesto8() + "', '" + impu01.getImpuesto7() + "', '"
+					+ impu01.getImpuesto6() + "', '" + impu01.getImpuesto5() + "');");
+			
+			stp.executeUpdate("INSERT INTO PAR_FACTC01\n" + "(CVE_DOC, NUM_PAR, CVE_ART, CANT, PXS, PREC, COST, "
+					+ "IMPU1, IMPU2, IMPU3, IMPU4, IMP1APLA, IMP2APLA, IMP3APLA, IMP4APLA, "
+					+ "TOTIMP1, TOTIMP2, TOTIMP3, TOTIMP4, DESC1, DESC2, DESC3, "
+					+ "COMI, APAR, ACT_INV, NUM_ALM, POLIT_APLI, TIP_CAM, UNI_VENTA, TIPO_PROD, CVE_OBS, REG_SERIE, E_LTPD, TIPO_ELEM, NUM_MOV, "
+					+ "TOT_PARTIDA, IMPRIMIR, MAN_IEPS, APL_MAN_IMP, CUOTA_IEPS, APL_MAN_IEPS, MTO_PORC, MTO_CUOTA, CVE_ESQ, DESCR_ART, UUID, CVE_UNIDAD, CVE_PRODSERV, VERSION_SINC, TOTIMP8, TOTIMP7, TOTIMP6, TOTIMP5, IMP8APLA, IMP7APLA, IMP6APLA, IMP5APLA, IMPU8, IMPU7, IMPU6, IMPU5)\n"
+					+ "VALUES('C" + ULT_DOC + "', '" + part + "', '" + p.getCveArt() + "', '" + p.getCant() + "', '"
+					+ p.getCant() + "', '" + p.getPrecio() + "','" + p.getPrecio() + "'" + ",'" + impu01.getImpuesto1()
+					+ "', '" + impu01.getImpuesto2() + "','" + impu01.getImpuesto3() + "','" + impu01.getImpuesto4()
+					+ "','" + impu01.getImp1aplica() + "','" + impu01.getImp2aplica() + "','" + impu01.getImp3aplica()
+					+ "','" + impu01.getImp4aplica() + "'" + ", 0, 0, 0, '" + calcularDescuento + "', '"
+					+ politicasDescuentoValor(descr[0], clasificacion) * 100 + "', 0, 0," + " 0, 0, 'N', '"
+					+ folioCtrlAlm + "', '', 1, '" + inve01.getUniMed() + "', 'P', 0, 0, 0, 'N', 0, '"
+					+ (p.getCant() * p.getPrecio()) + "', NULL, '"+ inve01.getManIeps() +"', '"+ inve01.getAplManImp() +"', '"+inve01.getCuotaIeps()+"', '"+inve01.getAplManIeps()+"', NULL, NULL, '"
+					+ inve01.getCveEsqimpu() + "', NULL, '','"+ inve01.getCveUnidad() +"', '"+ inve01.getCveProdserv() +"', '" + fecha + "', 0, 0, 0, 0, '" + impu01.getImp8aplica()
+					+ "', '" + impu01.getImp7aplica() + "', '" + impu01.getImp6aplica() + "', '"
+					+ impu01.getImp5aplica() + "', '" + impu01.getImpuesto8() + "', '" + impu01.getImpuesto7() + "', '"
+					+ impu01.getImpuesto6() + "', '" + impu01.getImpuesto5() + "');");
+			
 			part++;
 		}
-
+		
+		actualizarPrecioEncabezado("C" + ULT_DOC);
 		this.CerrarSae();
+		this.CerrarSysPedidos();
 	}
 
 	public void buscarFolio() {
@@ -548,7 +656,7 @@ public class PartidaBean extends Conexion implements Serializable {
 					.prepareStatement("SELECT SERIE, ULT_DOC FROM FOLIOSF01 WHERE TIP_DOC='C' AND SERIE='C'");
 			ResultSet rs = ps.executeQuery();
 			if (!rs.isBeforeFirst()) {
-				System.out.println("No hay folios");
+				//System.out.println("No hay folios");
 			} else {
 				while (rs.next()) {
 					this.SERIE = rs.getString("SERIE");
@@ -557,8 +665,30 @@ public class PartidaBean extends Conexion implements Serializable {
 			}
 			this.CerrarSae();
 		} catch (SQLException ex) {
-			LOGGER.error("ERROR AL BUSCAR FOLIO: "+ex);
+			LOGGER.error("ERROR AL BUSCAR FOLIO: " + ex);
 		}
+	}
+
+	public int buscarNumAlmaceLTPD(String cveArticulo) {
+		int cveAlm = 0;
+		try {
+			this.ConectarSae();
+			PreparedStatement ps = this.getCnSae()
+					.prepareStatement("SELECT CVE_ALM FROM LTPD01 WHERE CVE_ART='" + cveArticulo + "'");
+			ResultSet rs = ps.executeQuery();
+			if (!rs.isBeforeFirst()) {
+
+			} else {
+				while (rs.next()) {
+					cveAlm = rs.getInt("CVE_ALM");
+					//LOGGER.info("CLAVE DE ALMACEN: " + cveAlm);
+				}
+			}
+			this.CerrarSae();
+		} catch (SQLException ex) {
+			LOGGER.error("ERROR AL BUSCAR LA CLAVE DE ALMACEN: " + ex);
+		}
+		return cveAlm;
 	}
 
 	// BUSCAR DESCUENTO
@@ -567,21 +697,21 @@ public class PartidaBean extends Conexion implements Serializable {
 		try {
 			this.ConectarSysPedidos();
 			PreparedStatement ps = this.getCnSysPedidos()
-					.prepareStatement("SELECT PORCENTAJE FROM POLITICAS_DESCUENTO WHERE CLAS_CLIE='"
-							+ clasificacion + "' AND LIN_PROD LIKE '" + articulo + "%'");
+					.prepareStatement("SELECT PORCENTAJE FROM POLITICAS_DESCUENTO WHERE CLAS_CLIE='" + clasificacion
+							+ "' AND LIN_PROD LIKE '" + articulo + "%'");
 			ResultSet rs = ps.executeQuery();
 			if (!rs.isBeforeFirst()) {
 				LOGGER.warn("DESCUENTO NO ENCONTRADO PARA EL ARTICULO: " + articulo);
-				descuento=0.0;
+				descuento = 0.0;
 			} else {
 				while (rs.next()) {
 					descuento = rs.getDouble("PORCENTAJE");
-					LOGGER.warn("DESCUENTO ENCONTRADO DE: "+ descuento +" PARA EL ARTICULO: " + articulo);
+					LOGGER.warn("DESCUENTO ENCONTRADO DE: " + descuento + " PARA EL ARTICULO: " + articulo);
 				}
 			}
 			this.CerrarSysPedidos();
 		} catch (SQLException ex) {
-			LOGGER.error("ERROR AL BUSCAR EL DESCUENTO: "+ex);
+			LOGGER.error("ERROR AL BUSCAR EL DESCUENTO: " + ex);
 		}
 		return descuento;
 	}
@@ -606,10 +736,48 @@ public class PartidaBean extends Conexion implements Serializable {
 
 	public void actualizarFolio() throws SQLException {
 		this.ConectarSae();
-		PreparedStatement ps = this.getCnSae().prepareStatement(
-				"UPDATE FOLIOSF01 SET ULT_DOC='" + ULT_DOC + "' WHERE TIP_DOC='C' AND SERIE='C'");
+		PreparedStatement ps = this.getCnSae()
+				.prepareStatement("UPDATE FOLIOSF01 SET ULT_DOC='" + ULT_DOC + "' WHERE TIP_DOC='C' AND SERIE='C'");
 		ps.executeUpdate();
 		this.CerrarSae();
+	}
+
+	public void actualizarPrecioEncabezado(String cveDocumento) {
+		try {
+			ct = 0.0;
+			it = 0.0;
+			dt = 0.0;
+			ConectarSae();
+			ConectarSysPedidos();
+			String sql = "SELECT SUM(TOT_PARTIDA) AS CANTIDAD_TOTAL, SUM(TOTIMP4) AS IMPUESTO_TOTAL4, ((SUM(DESC1) + SUM(DESC2) + SUM (DESC3))/ 100) * TOT_PARTIDA AS DESCUENTO_TOTAL FROM PAR_FACTC01 WHERE CVE_DOC = '"
+					+ cveDocumento + "' GROUP BY TOT_PARTIDA";
+			Statement st = getCnSae().createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			if (!rs.isBeforeFirst()) {
+				System.out.println("No hay nada");
+			} else {
+				while (rs.next()) {
+					cantidadTotal = rs.getDouble("CANTIDAD_TOTAL");
+					ct += cantidadTotal;
+					impuestoTotal = rs.getDouble("IMPUESTO_TOTAL4");
+					it += impuestoTotal;
+					descuentoTotal = rs.getDouble("DESCUENTO_TOTAL");
+					dt += descuentoTotal;
+				}
+			}
+			imp = 0.0;
+			imp = ct + it - dt;
+			String sqlActualizar = "UPDATE FACTC01 SET CAN_TOT=" + ct + ", DES_TOT=" + dt + ", IMP_TOT4=" + it
+					+ ", IMPORTE=" + imp + " WHERE CVE_DOC='" + cveDocumento + "'";
+			PreparedStatement ps = getCnSae().prepareStatement(sqlActualizar);		
+			ps.executeUpdate();
+			PreparedStatement psp = getCnSysPedidos().prepareStatement(sqlActualizar);		
+			psp.executeUpdate();
+			CerrarSae();
+			CerrarSysPedidos();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	public void onRowEdit(RowEditEvent event) {

@@ -30,66 +30,46 @@
 
 				<p:panel header="" style="margin: 0 auto;">
 
-					<h:panelGrid id="gridBuscarDatosCliente" columns="5">
-						<p:outputLabel value="CLIENTE" style="font-weight: bold" />
+					<h:panelGrid id="gridBuscarDatosCliente" columns="1">
+						<p:badge value="Nombre: #{loginBean.cliente.nombre}"
+							severity="warning" />
+						<p:badge value="RFC: #{loginBean.cliente.rfc}" severity="warning" />
+						<p:badge value="Días de crédito: #{loginBean.cliente.diascred}"
+							severity="warning" />
+						<p:badge value="Saldo disponible: #{loginBean.cliente.saldo}"
+							severity="warning" />
+						<p:badge value="Límite crédito: #{loginBean.cliente.limcred}"
+							severity="warning" />
 
 					</h:panelGrid>
 					<p:divider style="height: 2px" />
-					<h:panelGrid id="DatosCliente" columns="2">
-						<p:dataTable id="tblEncabezado" var="item"
-							styleClass="color: #1E90FF !important"
-							emptyMessage="Ningún cliente agregado"
-							value="#{partidaBean.listaClieRfc}" style="font-size: .8rem;">
-							<p:column headerText="RFC">
-								<h:outputText value="#{item.rfc}" />
-							</p:column>
-							<p:column headerText="NOMBRE">
-								<h:outputText value="#{item.nombre}" />
-							</p:column>
-							<p:column headerText="CORREO">
-								<h:outputText value="#{item.emailpred}" />
-							</p:column>
-							<p:column headerText="CALLE">
-								<h:outputText value="#{item.calle}" />
-							</p:column>
-							<p:column headerText="NÚMERO">
-								<h:outputText value="#{item.numext}" />
-							</p:column>
-							<p:column headerText="CÓDIGO POSTAL">
-								<h:outputText value="#{item.codigo}" />
-							</p:column>
-							<p:column headerText="ESTADO">
-								<h:outputText value="#{item.estado}" />
-							</p:column>
-						</p:dataTable>
-					</h:panelGrid>
+
 
 					<br></br>
 					<br></br>
-					<h:panelGrid columns="1"
-						style="font-size: 1.5rem; font-weight: bold; margin-top: 30px; margin: 0 auto; color: #1E90FF; text-align: center">
-                                    PEDIDO NO
-                                    <p:outputLabel
-							value="#{partidaBean.SERIE} #{partidaBean.ULT_DOC}" />
+					<div style="text-align: center;">
+						<h:outputText styleClass="folio"
+							value="&nbsp;&nbsp;&nbsp;PEDIDO NO: #{partidaBean.SERIE} #{partidaBean.ULT_DOC}&nbsp;&nbsp;&nbsp;" />
+					</div>
 
-					</h:panelGrid>
+
 
 
 					<p:divider style="height: 2px" />
 					<h:panelGrid id="gridPartida"
 						style="font-weight: bold; font-size: 14px" columns="3">
-						<p:commandButton id="articulo" value="Buscar artículo"
+						<p:commandButton id="articulo" value="Agregar artículos al pedido"
 							oncomplete="PF('dlgArticulos').show()"
 							icon="fa-solid fa-magnifying-glass"
 							update="frmCotizaciones:dlgArt"
-							style="height: 40px; width: 200px;  font-size: 16px;">
+							style="height: 3rem; width: 18rem;  font-size: 16px;">
 						</p:commandButton>
 						<p:tooltip for="articulo" trackMouse="true"
 							value="Buscar artículo" />
 					</h:panelGrid>
 					<p:divider style="height: 2px" />
 					<p:dataTable id="tblArticulos" var="art" editable="true"
-						rowIndexVar="index" value="#{partidaBean.partidaCot}"
+						size="small" rowIndexVar="index" value="#{partidaBean.partidaCot}"
 						style="font-size: .8rem"
 						emptyMessage="Ningún artículo agregado...">
 
@@ -108,7 +88,10 @@
 						</p:column>
 
 						<p:column headerText="PRECIO" style="width: 10rem">
-                                $ <h:outputText value="#{art.precio}" />
+							<h:outputText value="#{art.precio}">
+								<f:convertNumber type="currency" currencySymbol="$"
+									locale="en_US" groupingUsed="true" maxFractionDigits="2" />
+							</h:outputText>
 						</p:column>
 
 						<p:column headerText="CANTIDAD" style="width: 10rem">
@@ -126,12 +109,11 @@
 							<h:outputText value="#{art.tipMon eq '1' ? 'PESOS' : 'DÓLARES'}" />
 						</p:column>
 
-						<p:column headerText="DESCUENTO %" style="width: 10rem">
-							<h:outputText value="#{art.desc1} %" />
-						</p:column>
-
 						<p:column headerText="TOTAL PARTIDA" style="width: 10rem">
-                                $ <h:outputText value="#{art.totPart}" />
+							<h:outputText value="#{art.totPart}">
+								<f:convertNumber type="currency" currencySymbol="$"
+									locale="en_US" groupingUsed="true" maxFractionDigits="2" />
+							</h:outputText>
 						</p:column>
 
 						<p:column headerText="EDITAR CANTIDAD" style="width: 10rem">
@@ -153,10 +135,6 @@
 
 						<p:badge id="mxn" value="TOTAL MXN: $ #{partidaBean.mxn}"
 							severity="success" styleClass="ml-4" style="font-size: 1.2rem" />
-						<!-- 						<p:outputLabel id="mxn" -->
-						<!-- 							style="font-weight: bold; font-size: 1.2rem; color: #FF2F0B" -->
-						<!-- 							value="TOTAL MXN: $ #{partidaBean.mxn}" /> -->
-
 						<br></br>
 						<p:divider style="height: 2px" />
 						<p:commandButton id="registrar" value="Registrar pedido"
@@ -166,7 +144,7 @@
 						</p:commandButton>
 						<p:tooltip for="registrar" value="Registrar pedido"
 							trackMouse="true" />
-
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<p:commandButton id="cancelar" value="Cancelar pedido actual"
 							icon="fa-solid fa-delete-left" styleClass="ui-button-warning"
 							style="height: 40px; width: 220px;  font-size: 16px;">
@@ -182,16 +160,19 @@
 				<!--Diálogo para mostrar artículos-->
 
 				<p:dialog id="dlgArt" widgetVar="dlgArticulos" modal="false"
-					position="top" resizable="true" header="LISTA DE ARTÍCULOS"
-					showEffect="size" hideEffect="puff" closable="true"
-					minimizable="true" maximizable="true">
-					<p:dataTable id="tblArt" paginator="true" rows="50"
+					position="top" resizable="true" showEffect="size" hideEffect="puff"
+					closable="true" minimizable="true" maximizable="true">
+					<div style="text-align: center;">
+						<h:outputText styleClass="folio"
+							value="&nbsp;&nbsp;&nbsp;Lista de artículos&nbsp;&nbsp;&nbsp;" />
+					</div>
+					<p:dataTable id="tblArt" paginator="true" rows="10"
 						paginatorPosition="top" var="item" sortMode="multiple"
-						style="height: 700px; width: 900px; font-size: 12px"
-						scrollHeight="650" scrollWidth="100%"
+						style="height: 700px; width: 1000px; font-size: 12px"
+						scrollHeight="650" scrollWidth="100%" size="small"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-						rowsPerPageTemplate="50,100,200,500" 
-						liveScroll="true" rowHover="true" paginatorAlwaysVisible="true"
+						rowsPerPageTemplate="10,50,100,200,500" liveScroll="true"
+						rowHover="true" paginatorAlwaysVisible="true"
 						value="#{PreciosClienteBean.listaPrecios}"
 						emptyMessage="No hay datos de cliente">
 						<p:ajax event="sort" skipChildren="false" />
@@ -202,14 +183,17 @@
 							<h:outputText value="#{item.numMon eq '1' ? 'MXN':'USD'}" />
 						</p:column>
 						<p:column headerText="Precio" style=" width: 6rem">
-                                $<h:outputText value="#{item.precio}" />
+							<h:outputText value="#{item.precio}">
+								<f:convertNumber type="currency" currencySymbol="$"
+									locale="en_US" groupingUsed="true" maxFractionDigits="2" />
+							</h:outputText>
 						</p:column>
 						<p:column filterBy="#{item.cveArt}" style="width: 5rem"
 							sortBy="#{item.cveArt}" headerText="Clave artículo">
 							<h:outputText value="#{item.cveArt}" />
 						</p:column>
 						<p:column filterBy="#{item.descr}" sortBy="#{item.descr}"
-							style="width: 15rem" headerText="Descripción">
+							style="width: 18rem" headerText="Descripción">
 							<h:outputText value="#{item.descr}" />
 						</p:column>
 						<p:column headerText="Seleccionar artículo" style="width: 12rem">
@@ -235,15 +219,15 @@
 					header="Artículo seleccionado: #{partidaBean.descrSeleccionada}"
 					modal="false" showEffect="explode" hideEffect="explode">
 					<h:panelGrid columns="4">
-						<p:outputLabel value="Ingresa cantidad:" />
+						<p:badge value="Ingresa cantidad:" />
 						<p:inputNumber id="txtCantidad" value="#{partidaBean.cantidad}"
 							placeholder="Ingrese tu cantidad" />
-						<p:commandButton value="Agregar partida"
+						<p:commandButton value="Agregar artículo al pedido"
 							icon="fa-solid fa-cart-plus" styleClass="ui-button-success"
 							actionListener="#{partidaBean.agregarPartida}"
 							update="frmCotizaciones:tblArticulos :frmCotizaciones:dlgDesc, frmCotizaciones:mxn,frmCotizaciones:msg"
 							oncomplete="PF('dlgDescuento').hide();"
-							style="height: 2.2rem; width: 10rem; font-size: 15px;">
+							style="height: 2.2rem; width: 15rem; font-size: 15px;">
 						</p:commandButton>
 					</h:panelGrid>
 				</p:dialog>

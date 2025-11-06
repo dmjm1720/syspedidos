@@ -2,6 +2,7 @@ package com.dmjm.dao;
 
 import java.util.List;
 
+import com.dmjm.model.EncabezadoFact;
 import com.dmjm.model.Factc01;
 
 public interface FacturaFactcDao {
@@ -9,4 +10,8 @@ public interface FacturaFactcDao {
 	List<Factc01> listaFacturas();
 	
 	List<Factc01> listaFacturasClientes();
+	
+	List<EncabezadoFact> listaFCli();
+	
+	List<EncabezadoFact> listaFXCli();
 }

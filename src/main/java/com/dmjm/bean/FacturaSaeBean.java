@@ -8,12 +8,11 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.primefaces.PrimeFaces;
-
 import com.dmjm.dao.FacturaFactcDao;
 import com.dmjm.dao.PartidaFactcDao;
 import com.dmjm.impl.FacturaFactcDaoImpl;
 import com.dmjm.impl.PartidaFactcDaoImpl;
+import com.dmjm.model.EncabezadoFact;
 import com.dmjm.model.Factc01;
 import com.dmjm.model.ParFactc01;
 import com.dmjm.model.PartidaCotizacion;
@@ -33,6 +32,10 @@ public class FacturaSaeBean implements Serializable {
 
 	private List<PartidaCotizacion> listarPartidasCotizaciones;
 
+	private List<EncabezadoFact> listaFacturasEncabezadosClientes;
+	private List<EncabezadoFact> listaFacturasEncabezadosClientesVentas;
+	private EncabezadoFact encabezadoFact;
+
 	public FacturaSaeBean() {
 
 	}
@@ -44,7 +47,20 @@ public class FacturaSaeBean implements Serializable {
 		fc = new Factc01();
 		pf = new ParFactc01();
 		listarFacturasCotClientes = new ArrayList<>();
-	
+		
+		
+		listaFacturasEncabezadosClientes = new ArrayList<>();
+		encabezadoFact = new EncabezadoFact();
+		
+		FacturaFactcDao fDao = new FacturaFactcDaoImpl();
+		listaFacturasEncabezadosClientes = fDao.listaFXCli();
+		
+		
+		listaFacturasEncabezadosClientesVentas = new ArrayList<>();
+		
+		FacturaFactcDao fClieDao = new FacturaFactcDaoImpl();
+		listaFacturasEncabezadosClientesVentas = fClieDao.listaFCli();
+
 	}
 
 	public List<Factc01> getListarFacturasCotizaciones() {
@@ -69,6 +85,24 @@ public class FacturaSaeBean implements Serializable {
 		this.pf = pf;
 	}
 
+	public EncabezadoFact getEncabezadoFact() {
+		return encabezadoFact;
+	}
+
+	public void setEncabezadoFact(EncabezadoFact encabezadoFact) {
+		this.encabezadoFact = encabezadoFact;
+	}
+
+	public List<EncabezadoFact> getListaFacturasEncabezadosClientes() {
+		return listaFacturasEncabezadosClientes;
+	}
+
+	
+	
+	public List<EncabezadoFact> getListaFacturasEncabezadosClientesVentas() {
+		return listaFacturasEncabezadosClientesVentas;
+	}
+
 	public List<ParFactc01> getListaPartidasCotizaciones() {
 		PartidaFactcDao pDao = new PartidaFactcDaoImpl();
 		listaPartidasCotizaciones = pDao.listaPartidas(fc.getCveDoc());
@@ -84,8 +118,7 @@ public class FacturaSaeBean implements Serializable {
 	public List<PartidaCotizacion> getListarPartidasCotizaciones() {
 		listarPartidasCotizaciones = new ArrayList<>();
 		PartidaFactcDao fDao = new PartidaFactcDaoImpl();
-		listarPartidasCotizaciones = fDao.listarPartidasCotizacion(fc.getCveDoc());
-		//PrimeFaces.current().executeScript("PF('dlgDetalle').show();");
+		listarPartidasCotizaciones = fDao.listarPartidasCotizacion(encabezadoFact.getCve_doc());
 		return listarPartidasCotizaciones;
 	}
 
