@@ -73,14 +73,14 @@ public class FacturaFactcDaoImpl extends Conexion implements FacturaFactcDao {
 		try {
 			this.ConectarSae();
 			PreparedStatement ps = this.getCnSae()
-					.prepareStatement("SELECT dbo.CLIE01.CLAVE, dbo.CLIE01.NOMBRE, dbo.CLIE01.RFC, dbo.FACTC01.CVE_DOC,"
-							+ "	dbo.FACTC01.STATUS,	dbo.FACTC01.CVE_PEDI, dbo.FACTC01.FECHA_DOC, dbo.FACTC01.FECHA_ENT,"
-							+ "	dbo.FACTC01.FECHA_VEN, dbo.FACTC01.IMP_TOT1, dbo.FACTC01.IMP_TOT2, dbo.FACTC01.IMP_TOT3,"
-							+ " dbo.FACTC01.IMP_TOT4, dbo.FACTC01.CAN_TOT, dbo.FACTC01.FECHA_CANCELA, dbo.FACTC01.DES_TOT,"
-							+ " dbo.FACTC01.CONDICION, dbo.FACTC01.NUM_PAGOS, dbo.FACTC01.FORMAENVIO, dbo.FACTC01.IMPORTE,"
-							+ " dbo.FACTC01.METODODEPAGO, dbo.FACTC01.TIP_DOC_ANT, dbo.FACTC01.DOC_ANT,	dbo.FACTC01.TIP_DOC_SIG,"
-							+ " dbo.FACTC01.DOC_SIG" + " FROM dbo.CLIE01" + " INNER JOIN dbo.FACTC01 ON"
-							+ "	dbo.CLIE01.CLAVE = dbo.FACTC01.CVE_CLPV" + " WHERE dbo.FACTC01.SERIE='C'");
+					.prepareStatement("SELECT dbo.CLIE01.CLAVE, dbo.CLIE01.NOMBRE, dbo.CLIE01.RFC, dbo.FACTP01.CVE_DOC,"
+							+ "	dbo.FACTP01.STATUS,	dbo.FACTP01.CVE_PEDI, dbo.FACTP01.FECHA_DOC, dbo.FACTP01.FECHA_ENT,"
+							+ "	dbo.FACTP01.FECHA_VEN, dbo.FACTP01.IMP_TOT1, dbo.FACTP01.IMP_TOT2, dbo.FACTP01.IMP_TOT3,"
+							+ " dbo.FACTP01.IMP_TOT4, dbo.FACTP01.CAN_TOT, dbo.FACTP01.FECHA_CANCELA, dbo.FACTP01.DES_TOT,"
+							+ " dbo.FACTP01.CONDICION, dbo.FACTP01.NUM_PAGOS, dbo.FACTP01.FORMAENVIO, dbo.FACTP01.IMPORTE,"
+							+ " dbo.FACTP01.METODODEPAGO, dbo.FACTP01.TIP_DOC_ANT, dbo.FACTP01.DOC_ANT,	dbo.FACTP01.TIP_DOC_SIG,"
+							+ " dbo.FACTP01.DOC_SIG" + " FROM dbo.CLIE01" + " INNER JOIN dbo.FACTP01 ON"
+							+ "	dbo.CLIE01.CLAVE = dbo.FACTP01.CVE_CLPV" + " WHERE dbo.FACTP01.FECHA_DOC LIKE '%2025%'");
 			ResultSet rs = ps.executeQuery();
 			if (!rs.isBeforeFirst()) {
 				System.out.println("No hay folios");

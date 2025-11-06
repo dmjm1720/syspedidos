@@ -44,15 +44,19 @@
 
 						<p:column headerText="DETALLE" style="width: 10rem"
 							styleClass="textoCentrado">
-							<p:commandButton value="Ver detalle" styleClass="btn btn-info"
-								icon="fa-solid fa-circle-info"
+							<p:commandButton value="Ver detalle" styleClass="ui-button-info"
+								icon="fa-solid fa-circle-info" action="#{factSaeBean.listarPartidasPedidos(item.cve_doc)}"
 								oncomplete="PF('dlgDetalle').show();"
 								update="frmPedidos:tblDetalle">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{factSaeBean.encabezadoFact}" />
 							</p:commandButton>
 						</p:column>
 
+						<p:column headerText="IMPRIMIR" style="width: 10rem"
+							styleClass="textoCentrado">
+							<p:commandButton value="Imprimir" styleClass="ui-button-warning"
+								icon="fa-solid fa-print" actionListener="#{factSaeBean.listarEtiquetas(item.cve_doc)}">
+							</p:commandButton>
+						</p:column>
 						<p:column headerText="CLAVE CLIENTE" filterBy="#{item.clave}" sortBy="#{item.clave}"
 							style="width: 6rem;" styleClass="textoCentrado">
 							<h:outputText value="#{item.clave}" />

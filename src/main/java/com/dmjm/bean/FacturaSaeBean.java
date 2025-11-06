@@ -2,7 +2,10 @@ package com.dmjm.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -16,6 +19,7 @@ import com.dmjm.model.EncabezadoFact;
 import com.dmjm.model.Factc01;
 import com.dmjm.model.ParFactc01;
 import com.dmjm.model.PartidaCotizacion;
+import com.dmjm.util.Etiquetas;
 
 @Named("factSaeBean")
 @ViewScoped
@@ -35,6 +39,7 @@ public class FacturaSaeBean implements Serializable {
 	private List<EncabezadoFact> listaFacturasEncabezadosClientes;
 	private List<EncabezadoFact> listaFacturasEncabezadosClientesVentas;
 	private EncabezadoFact encabezadoFact;
+	private EncabezadoFact etiquetasPedido;
 
 	public FacturaSaeBean() {
 
@@ -47,19 +52,20 @@ public class FacturaSaeBean implements Serializable {
 		fc = new Factc01();
 		pf = new ParFactc01();
 		listarFacturasCotClientes = new ArrayList<>();
-		
-		
+
 		listaFacturasEncabezadosClientes = new ArrayList<>();
 		encabezadoFact = new EncabezadoFact();
-		
+		etiquetasPedido = new EncabezadoFact();
+
 		FacturaFactcDao fDao = new FacturaFactcDaoImpl();
 		listaFacturasEncabezadosClientes = fDao.listaFXCli();
-		
-		
+
 		listaFacturasEncabezadosClientesVentas = new ArrayList<>();
-		
+
 		FacturaFactcDao fClieDao = new FacturaFactcDaoImpl();
 		listaFacturasEncabezadosClientesVentas = fClieDao.listaFCli();
+		
+		listarPartidasCotizaciones = new ArrayList<>();
 
 	}
 
@@ -67,6 +73,14 @@ public class FacturaSaeBean implements Serializable {
 		FacturaFactcDao fDao = new FacturaFactcDaoImpl();
 		listarFacturasCotizaciones = fDao.listaFacturas();
 		return listarFacturasCotizaciones;
+	}
+
+	public EncabezadoFact getEtiquetasPedido() {
+		return etiquetasPedido;
+	}
+
+	public void setEtiquetasPedido(EncabezadoFact etiquetasPedido) {
+		this.etiquetasPedido = etiquetasPedido;
 	}
 
 	public Factc01 getFc() {
@@ -97,8 +111,6 @@ public class FacturaSaeBean implements Serializable {
 		return listaFacturasEncabezadosClientes;
 	}
 
-	
-	
 	public List<EncabezadoFact> getListaFacturasEncabezadosClientesVentas() {
 		return listaFacturasEncabezadosClientesVentas;
 	}
@@ -116,10 +128,27 @@ public class FacturaSaeBean implements Serializable {
 	}
 
 	public List<PartidaCotizacion> getListarPartidasCotizaciones() {
+		return listarPartidasCotizaciones;
+	}
+	
+	public void listarPartidasPedidos(String pedido) {
 		listarPartidasCotizaciones = new ArrayList<>();
 		PartidaFactcDao fDao = new PartidaFactcDaoImpl();
-		listarPartidasCotizaciones = fDao.listarPartidasCotizacion(encabezadoFact.getCve_doc());
-		return listarPartidasCotizaciones;
+		listarPartidasCotizaciones = fDao.listarPartidasCotizacion(pedido);
+	}
+	
+	public void listarEtiquetas(String pedido) {
+		listarPartidasCotizaciones = new ArrayList<>();
+		PartidaFactcDao fDao = new PartidaFactcDaoImpl();
+		listarPartidasCotizaciones = fDao.listarPartidasCotizacion(pedido);
+		Etiquetas e = new Etiquetas();
+
+		Map<String, Integer> etiquetas = new LinkedHashMap<>();
+		for (PartidaCotizacion etiFact : listarPartidasCotizaciones) {
+			etiquetas.put(etiFact.getDescr(), etiFact.getCant());
+		}
+
+		e.impresion(etiquetas);
 	}
 
 }

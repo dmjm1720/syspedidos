@@ -50,12 +50,12 @@ public class PartidaFactcDaoImpl extends Conexion implements PartidaFactcDao {
 			this.ConectarSae();
 			PreparedStatement ps = this.getCnSae()
 					.prepareStatement("SELECT " + "	dbo.INVE01.UNI_MED, " + "	dbo.INVE01.DESCR, "
-							+ "	dbo.INVE01.CVE_ART, " + "	dbo.PAR_FACTC01.CVE_DOC, " + "	dbo.PAR_FACTC01.NUM_PAR, "
-							+ "	dbo.PAR_FACTC01.CANT, " + "	dbo.PAR_FACTC01.PREC, " + "	dbo.PAR_FACTC01.IMPU4, "
-							+ "	dbo.PAR_FACTC01.TOTIMP4, " + "	dbo.PAR_FACTC01.DESC1, "
-							+ "	dbo.PAR_FACTC01.TOT_PARTIDA " + "FROM " + "	dbo.INVE01 " + "INNER JOIN "
-							+ "dbo.PAR_FACTC01 ON " + "	dbo.INVE01.CVE_ART = dbo.PAR_FACTC01.CVE_ART " + "WHERE "
-							+ "	dbo.PAR_FACTC01.CVE_DOC = '" + cveDoc + "';");
+							+ "	dbo.INVE01.CVE_ART, " + "	dbo.PAR_FACTP01.CVE_DOC, " + "	dbo.PAR_FACTP01.NUM_PAR, "
+							+ "	dbo.PAR_FACTP01.CANT, " + "	dbo.PAR_FACTP01.PREC, " + "	dbo.PAR_FACTP01.IMPU4, "
+							+ "	dbo.PAR_FACTP01.TOTIMP4, " + "	dbo.PAR_FACTP01.DESC1, "
+							+ "	dbo.PAR_FACTP01.TOT_PARTIDA " + "FROM " + "	dbo.INVE01 " + "INNER JOIN "
+							+ "dbo.PAR_FACTP01 ON " + "	dbo.INVE01.CVE_ART = dbo.PAR_FACTP01.CVE_ART " + "WHERE "
+							+ "	dbo.PAR_FACTP01.CVE_DOC = '" + cveDoc + "';");
 			ResultSet rs = ps.executeQuery();
 			if (!rs.isBeforeFirst()) {
 				System.out.println("No hay folios");
