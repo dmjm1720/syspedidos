@@ -20,6 +20,7 @@
 		<property name="hibernate.enable_lazy_load_no_trans">true</property>
 
 		<mapping resource="com/dmjm/model/Usuarios.hbm.xml" />
-				<mapping resource="com/dmjm/model/Perfiles.hbm.xml" />
+		<mapping resource="com/dmjm/model/Perfiles.hbm.xml" />
+		<mapping resource="com/dmjm/model/Etiquetas.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

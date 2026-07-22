@@ -32,6 +32,18 @@ public class Usuarios implements java.io.Serializable {
 		this.estatus = estatus;
 	}
 
+	public Usuarios(Perfiles perfiles, String clave, String nombre, String rfc, String password, String correo,
+			Date fecha, boolean estatus) {
+		this.perfiles = perfiles;
+		this.clave = clave;
+		this.nombre = nombre;
+		this.rfc = rfc;
+		this.password = password;
+		this.correo = correo;
+		this.fecha = fecha;
+		this.estatus = estatus;
+	}
+
 	public Usuarios(int idusuario, Perfiles perfiles, String clave, String nombre, String rfc, String clasific,
 			Integer listaPrec, String cveVend, String password, String correo, Date fecha, boolean estatus) {
 		this.idusuario = idusuario;

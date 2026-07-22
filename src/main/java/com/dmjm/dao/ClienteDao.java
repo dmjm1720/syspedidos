@@ -23,4 +23,5 @@ public interface ClienteDao {
     public List<Clie01> listaClieRfc(String rfc);
     
     public Clie01 cliente(String rfc);
+    
 }

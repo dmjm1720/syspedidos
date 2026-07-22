@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 06-nov-2025 11:58:46 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.dmjm.model.Etiquetas" table="ETIQUETAS" schema="dbo" catalog="SYSPEDIDOS" optimistic-lock="version">
+        <id name="idEtiqueta" type="int">
+            <column name="ID_ETIQUETA" />
+            <generator class="native" />
+        </id>
+        <property name="cveArt" type="string">
+            <column name="CVE_ART" length="16" />
+        </property>
+        <property name="descr" type="string">
+            <column name="DESCR" length="40" />
+        </property>
+        <property name="cveDoc" type="string">
+            <column name="CVE_DOC" length="20" />
+        </property>
+        <property name="noOrden" type="java.lang.Integer">
+            <column name="NO_ORDEN" />
+        </property>
+        <property name="cantidad" type="java.lang.Integer">
+            <column name="CANTIDAD" />
+        </property>
+        <property name="cveClpv" type="string">
+            <column name="CVE_CLPV" length="10" />
+        </property>
+         <property name="docSig" type="string">
+            <column name="DOC_SIG" length="20" />
+        </property>
+    </class>
+</hibernate-mapping>

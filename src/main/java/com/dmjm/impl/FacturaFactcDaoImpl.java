@@ -80,7 +80,7 @@ public class FacturaFactcDaoImpl extends Conexion implements FacturaFactcDao {
 							+ " dbo.FACTP01.CONDICION, dbo.FACTP01.NUM_PAGOS, dbo.FACTP01.FORMAENVIO, dbo.FACTP01.IMPORTE,"
 							+ " dbo.FACTP01.METODODEPAGO, dbo.FACTP01.TIP_DOC_ANT, dbo.FACTP01.DOC_ANT,	dbo.FACTP01.TIP_DOC_SIG,"
 							+ " dbo.FACTP01.DOC_SIG" + " FROM dbo.CLIE01" + " INNER JOIN dbo.FACTP01 ON"
-							+ "	dbo.CLIE01.CLAVE = dbo.FACTP01.CVE_CLPV" + " WHERE dbo.FACTP01.FECHA_DOC LIKE '%2025%'");
+							+ "	dbo.CLIE01.CLAVE = dbo.FACTP01.CVE_CLPV" + " WHERE dbo.FACTP01.FECHA_DOC LIKE '%2025%' OR dbo.FACTP01.FECHA_DOC LIKE '%2026%'");
 			ResultSet rs = ps.executeQuery();
 			if (!rs.isBeforeFirst()) {
 				System.out.println("No hay folios");

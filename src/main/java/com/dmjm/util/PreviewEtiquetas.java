@@ -4,15 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.dmjm.dao.EtiquetasDao;
+import com.dmjm.impl.EtiquetasDaoImpl;
+import com.dmjm.model.Etiquetas;
 
-public class Etiquetas {
 
-	public void impresion(Map<String, Integer> inventario) {
+public class PreviewEtiquetas {
+	
+	private Etiquetas e;
+	
+	
+	public Etiquetas getE() {
+		return e;
+	}
+
+	public void setE(Etiquetas e) {
+		this.e = e;
+	}
+
+	public void impresion(Map<String, Integer> inventario, String pedido, String docS, String cveProv) {
 	    final int CAPACIDAD_NORMAL = 6;
 	    final int CAPACIDAD_CA = 12;
 	    List<Caja> cajas = new ArrayList<>();
 	    int cajaId = 1;
-
+	    
 	    // Primero procesa todos los productos "CA..." (no se mezclan)
 	    for (Map.Entry<String, Integer> entry : inventario.entrySet()) {
 	        String nombreProducto = entry.getKey();
@@ -32,11 +47,20 @@ public class Etiquetas {
 	                contenido.setProductoId(nombreProducto);
 	                contenido.setCantidad(aAgregar);
 	                cajaActual.getContenidos().add(contenido);
-
+	               
 	                System.out.println("Cantidad: " + contenido.getCantidad() + " | Producto: " + nombreProducto);
 	                System.out.println("No. caja: " + cajaId);
 	                System.out.println();
-
+	                
+	                e = new Etiquetas();
+	                e.setCantidad(contenido.getCantidad());
+	                e.setCveClpv(cveProv);
+	                e.setCveDoc(pedido.trim());
+	                e.setDocSig(docS);
+	                e.setNoOrden(cajaId);
+	                e.setDescr(nombreProducto);
+	                guardarEtiquetas(e);
+	                
 	                cajas.add(cajaActual);
 
 	                cantidad -= aAgregar;
@@ -75,7 +99,16 @@ public class Etiquetas {
 	            cajaActual.getContenidos().add(contenido);
 
 	            System.out.println("Cantidad: " + contenido.getCantidad() + " | Producto: " + nombreProducto);
-
+	            
+                e = new Etiquetas();
+                e.setCantidad(contenido.getCantidad());
+                e.setCveClpv(cveProv);
+                e.setCveDoc(pedido.trim());
+                e.setDocSig(docS);
+                e.setNoOrden(cajaId);
+                e.setDescr(nombreProducto);
+                guardarEtiquetas(e);
+                
 	            cantidad -= aAgregar;
 	            espacioDisponible -= aAgregar;
 
@@ -93,6 +126,11 @@ public class Etiquetas {
 	        cajas.add(cajaActual);
 	        System.out.println("No. caja: " + cajaActual.getId());
 	    }
+	}
+	
+	public void guardarEtiquetas(Etiquetas e) {
+		EtiquetasDao eDao = new EtiquetasDaoImpl();
+		eDao.guardarEtiquetas(e);
 	}
 	
 }

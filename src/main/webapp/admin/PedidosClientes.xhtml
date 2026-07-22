@@ -45,7 +45,8 @@
 						<p:column headerText="DETALLE" style="width: 10rem"
 							styleClass="textoCentrado">
 							<p:commandButton value="Ver detalle" styleClass="ui-button-info"
-								icon="fa-solid fa-circle-info" action="#{factSaeBean.listarPartidasPedidos(item.cve_doc)}"
+								icon="fa-solid fa-circle-info"
+								action="#{factSaeBean.listarPartidasPedidos(item.cve_doc)}"
 								oncomplete="PF('dlgDetalle').show();"
 								update="frmPedidos:tblDetalle">
 							</p:commandButton>
@@ -53,22 +54,28 @@
 
 						<p:column headerText="IMPRIMIR" style="width: 10rem"
 							styleClass="textoCentrado">
-							<p:commandButton value="Imprimir" styleClass="ui-button-warning"
-								icon="fa-solid fa-print" actionListener="#{factSaeBean.listarEtiquetas(item.cve_doc)}">
-							</p:commandButton>
+
+							<h:commandLink id="printer" target="_blank"
+							actionListener="#{factSaeBean.listarEtiquetas(item.cve_doc, item.doc_sig, item.clave, item.rfc)}"
+								style="width: 6rem; height: 2.5rem; text-decoration: none">
+								<h:graphicImage library="images" name="printer.png" alt="add" />
+							</h:commandLink>
 						</p:column>
-						<p:column headerText="CLAVE CLIENTE" filterBy="#{item.clave}" sortBy="#{item.clave}"
-							style="width: 6rem;" styleClass="textoCentrado">
+						<p:column headerText="CLAVE CLIENTE" filterBy="#{item.clave}"
+							sortBy="#{item.clave}" style="width: 6rem;"
+							styleClass="textoCentrado">
 							<h:outputText value="#{item.clave}" />
 						</p:column>
 
-						<p:column headerText="NOMBRE" filterBy="#{item.nombre}" sortBy="#{item.nombre}"
-							style="width: 15rem" styleClass="textoCentrado">
+						<p:column headerText="NOMBRE" filterBy="#{item.nombre}"
+							sortBy="#{item.nombre}" style="width: 15rem"
+							styleClass="textoCentrado">
 							<h:outputText value="#{item.nombre}" />
 						</p:column>
 
-						<p:column headerText="RFC" filterBy="#{item.rfc}" sortBy="#{item.rfc}"
-							style="width: 10rem" styleClass="textoCentrado">
+						<p:column headerText="RFC" filterBy="#{item.rfc}"
+							sortBy="#{item.rfc}" style="width: 10rem"
+							styleClass="textoCentrado">
 							<h:outputText value="#{item.rfc}" />
 						</p:column>
 
@@ -77,8 +84,9 @@
 							<h:outputText value="#{item.cve_doc}" />
 						</p:column>
 
-						<p:column headerText="ESTATUS" filterBy="#{item.estatus}" sortBy="#{item.estatus}"
-							style="width: 10rem" styleClass="textoCentrado">
+						<p:column headerText="ESTATUS" filterBy="#{item.estatus}"
+							sortBy="#{item.estatus}" style="width: 10rem"
+							styleClass="textoCentrado">
 							<h:outputText value="#{item.estatus}" />
 						</p:column>
 

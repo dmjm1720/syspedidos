@@ -1,5 +1,6 @@
 package com.dmjm.impl;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -32,5 +33,36 @@ public class LoginUsuarioImpl implements LoginDao {
         }
         return user;
     }
+
+	@Override
+	public String validarUsuarioExiste(String rfc) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			String hql = "SELECT e.rfc FROM Usuarios e WHERE e.rfc = :rfc";
+			Query<String> query = session.createQuery(hql, String.class);
+			query.setMaxResults(1);
+			query.setParameter("rfc", rfc);
+			return query.uniqueResultOptional().orElse("0");
+		}
+	}
+
+	@Override
+	public void guardarUsuario(Usuarios usuarios) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			session.save(usuarios);
+			session.getTransaction().commit();
+
+		} catch (HibernateException e) {
+			System.out.println(e.getMessage());
+			session.getTransaction().rollback();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		
+	}
 
 }
